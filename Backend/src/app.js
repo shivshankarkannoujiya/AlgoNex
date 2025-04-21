@@ -9,10 +9,16 @@ app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(express.static("public"));
 app.use(cookieParser());
 app.use(
-  cors({
-    origin: process.env.CORS_ORIGIN,
-    credentials: true,
-  })
+    cors({
+        origin: process.env.CORS_ORIGIN,
+        credentials: true,
+    }),
 );
+
+/** @description import routers */
+import healthcheckRouter from "./routes/healthcheck.routes.js";
+
+/** @description initialize api routes */
+app.use("/api/v1/health", healthcheckRouter);
 
 export default app;
