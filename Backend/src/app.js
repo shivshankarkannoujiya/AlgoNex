@@ -17,8 +17,10 @@ app.use(
 
 /** @description import routers */
 import healthcheckRouter from "./routes/healthcheck.routes.js";
+import authRouter from "./routes/auth.routes.js";
 
 /** @description initialize api routes */
 app.use("/api/v1/health", healthcheckRouter);
+app.use("/api/v1/users", authRouter);
 
 export default app;

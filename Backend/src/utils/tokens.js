@@ -59,7 +59,7 @@ async function generateTemporaryToken() {
         .update(unHashedToken)
         .digest("hex");
 
-    const tokenExpiry = Date.now() + 20 * 60 * 1000;
+    const tokenExpiry = new Date(Date.now() + 20 * 60 * 1000);
     return { unHashedToken, hashedToken, tokenExpiry };
 }
 

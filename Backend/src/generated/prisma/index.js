@@ -169,11 +169,12 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "postgresql://AlgoX_owner:npg_xzJFQ83ecfho@ep-empty-art-a4qqx50n-pooler.us-east-1.aws.neon.tech/AlgoX?sslmode=require"
+        "value": null
       }
     }
   },
