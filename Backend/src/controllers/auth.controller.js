@@ -4,10 +4,12 @@ import { ApiResponse } from "../utils/api-response.js";
 import { ApiError } from "../utils/api-error.js";
 import { UserRole } from "../generated/prisma/index.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
-import { generateTemporaryToken } from "../utils/tokens.js";
 import { sendEmail, emailVerificationMailGenContent } from "../utils/mail.js";
 import { isPasswordCorrect } from "../utils/checkPassword.js";
-import { generateAccessAndRefreshToken } from "../utils/tokens.js";
+import {
+    generateAccessAndRefreshToken,
+    generateTemporaryToken,
+} from "../utils/tokens.js";
 import { cookieOptions } from "../utils/constants.js";
 import path from "path";
 import crypto from "crypto";
@@ -176,7 +178,53 @@ const loginUser = asyncHandler(async (req, res) => {
         );
 });
 
-const resendVerificationEmail = asyncHandler(async (req, res) => {});
+const resendVerificationEmail = asyncHandler(async (req, res) => {
+    const { email } = req.body;
+    if (!email) {
+        throw new ApiError(400, "email is required");
+    }
+
+    const user = await prisma.user.findFirst({
+        where: {
+            email,
+        },
+    });
+
+    if (!user) {
+        throw new ApiError(404, "User  not found");
+    }
+
+    if (user.isEmailVerified) {
+        throw new ApiError(409, "email is already verified");
+    }
+
+    const { unHashedToken, hashedToken, tokenExpiry } =
+        await generateTemporaryToken();
+
+    await prisma.user.update({
+        where: {
+            id: user.id,
+        },
+        data: {
+            emailVerificationToken: hashedToken,
+            emailVerificationExpiry: tokenExpiry,
+        },
+    });
+
+    await sendEmail({
+        email: user?.email,
+        subject: "Please verify your email",
+        mailGenContent: emailVerificationMailGenContent(
+            user.username,
+            `${req.protocol}://${req.get("host")}/api/v1/users/verify/${unHashedToken}`,
+        ),
+    });
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, {}, "Mail has been sent to your mail Id"));
+});
+
 const logOutUser = asyncHandler(async (req, res) => {});
 const getCurrentUser = asyncHandler(async (req, res) => {});
 const refreshAccessToken = asyncHandler(async (req, res) => {});

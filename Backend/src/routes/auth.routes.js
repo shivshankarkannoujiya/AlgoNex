@@ -13,6 +13,7 @@ import {
 
 const router = Router();
 
+/** @description unprotected routes */
 router
     .route("/signup")
     .post(
@@ -23,5 +24,7 @@ router
 
 router.route("/verify/:emailVerificationToken").post(verifyEmail);
 router.route("/login").post(validate(userLoginSchema), loginUser);
+
+/** @description protected routes */
 
 export default router;
