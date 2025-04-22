@@ -1,6 +1,8 @@
 import { Router } from "express";
 import {
+    getCurrentUser,
     loginUser,
+    logOutUser,
     registerUser,
     verifyEmail,
 } from "../controllers/auth.controller.js";
@@ -10,6 +12,7 @@ import {
     userRegisterSchema,
     userLoginSchema,
 } from "../validators/auth.validators.js";
+import { isLoggedIn } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
@@ -26,5 +29,7 @@ router.route("/verify/:emailVerificationToken").post(verifyEmail);
 router.route("/login").post(validate(userLoginSchema), loginUser);
 
 /** @description protected routes */
+router.route("/logout").post(isLoggedIn, logOutUser);
+router.route("/me").get(getCurrentUser);
 
 export default router;

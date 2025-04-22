@@ -65,6 +65,7 @@ const registerUser = asyncHandler(async (req, res) => {
             id: user.id,
         },
         select: {
+            id: true,
             username: true,
             email: true,
             role: true,
@@ -159,6 +160,7 @@ const loginUser = asyncHandler(async (req, res) => {
             id: user.id,
         },
         select: {
+            id: true,
             username: true,
             email: true,
             role: true,
@@ -242,7 +244,23 @@ const logOutUser = asyncHandler(async (req, res) => {
         .json(new ApiResponse(204, {}, "User logged out"));
 });
 
-const getCurrentUser = asyncHandler(async (req, res) => {});
+const getCurrentUser = asyncHandler(async (req, res) => {
+    const user = await prisma.user.findUnique({
+        where: {
+            id: req.user.id,
+        },
+        select: {
+            id: true,
+            username: true,
+            email: true,
+            role: true,
+        },
+    });
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, user, "Current user fetched successfully"));
+});
 const refreshAccessToken = asyncHandler(async (req, res) => {});
 const resetForgottenPassword = asyncHandler(async (req, res) => {});
 const changeCurrentPassword = asyncHandler(async (req, res) => {});
