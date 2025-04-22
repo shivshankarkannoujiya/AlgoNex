@@ -6,6 +6,9 @@ import { UserRole } from "../generated/prisma/index.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { generateTemporaryToken } from "../utils/tokens.js";
 import { sendEmail, emailVerificationMailGenContent } from "../utils/mail.js";
+import { isPasswordCorrect } from "../utils/checkPassword.js";
+import { generateAccessAndRefreshToken } from "../utils/tokens.js";
+import { cookieOptions } from "../utils/constants.js";
 import path from "path";
 import crypto from "crypto";
 
@@ -57,7 +60,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
     const createdUser = await prisma.user.findUnique({
         where: {
-            email,
+            id: user.id,
         },
         select: {
             username: true,
@@ -110,8 +113,8 @@ const verifyEmail = asyncHandler(async (req, res) => {
             id: user.id,
         },
         data: {
-            emailVerificationToken: undefined,
-            emailVerificationExpiry: undefined,
+            emailVerificationToken: null,
+            emailVerificationExpiry: null,
             isEmailVerified: true,
         },
     });
@@ -119,7 +122,60 @@ const verifyEmail = asyncHandler(async (req, res) => {
     return res.status(200).json(new ApiResponse(200, "Email is verified"));
 });
 
-const loginUser = asyncHandler(async (req, res) => {});
+const loginUser = asyncHandler(async (req, res) => {
+    const { username, email, password } = req.body;
+
+    if (!username && !email) {
+        throw new ApiError(401, "username or email is required");
+    }
+
+    const user = await prisma.user.findFirst({
+        where: {
+            OR: [{ username }, { email }],
+        },
+    });
+
+    if (!user) {
+        throw new ApiError(404, "User does not exist");
+    }
+
+    const isPasswordValid = await isPasswordCorrect(password, user.password);
+    if (!isPasswordValid) {
+        throw new ApiError(401, "Invalid user credentials");
+    }
+
+    if (!user.isEmailVerified) {
+        throw new ApiError(401, "Please verify your email before logging in");
+    }
+
+    const { accessToken, refreshToken } = await generateAccessAndRefreshToken(
+        user.id,
+    );
+
+    const loggedInUser = await prisma.user.findUnique({
+        where: {
+            id: user.id,
+        },
+        select: {
+            username: true,
+            email: true,
+            role: true,
+        },
+    });
+
+    return res
+        .status(200)
+        .cookie("accessToken", accessToken, cookieOptions)
+        .cookie("refreshToken", refreshToken, cookieOptions)
+        .json(
+            new ApiResponse(
+                200,
+                { user: loggedInUser },
+                "User loggedIn successfully",
+            ),
+        );
+});
+
 const resendVerificationEmail = asyncHandler(async (req, res) => {});
 const logOutUser = asyncHandler(async (req, res) => {});
 const getCurrentUser = asyncHandler(async (req, res) => {});

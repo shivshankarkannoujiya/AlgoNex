@@ -1,9 +1,15 @@
 import { Router } from "express";
-import { registerUser, verifyEmail } from "../controllers/auth.controller.js";
+import {
+    loginUser,
+    registerUser,
+    verifyEmail,
+} from "../controllers/auth.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import { validate } from "../middlewares/validator.middleware.js";
-import { userRegisterSchema } from "../validators/auth.validators.js";
-
+import {
+    userRegisterSchema,
+    userLoginSchema,
+} from "../validators/auth.validators.js";
 
 const router = Router();
 
@@ -16,5 +22,6 @@ router
     );
 
 router.route("/verify/:emailVerificationToken").post(verifyEmail);
+router.route("/login").post(validate(userLoginSchema), loginUser);
 
 export default router;
