@@ -225,7 +225,23 @@ const resendVerificationEmail = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, {}, "Mail has been sent to your mail Id"));
 });
 
-const logOutUser = asyncHandler(async (req, res) => {});
+const logOutUser = asyncHandler(async (req, res) => {
+    await prisma.user.update({
+        where: {
+            id: req.user?.id,
+        },
+        data: {
+            refreshToken: "",
+        },
+    });
+
+    return res
+        .status(204)
+        .clearCookie("accessToken", cookieOptions)
+        .clearCookie("refreshToken", cookieOptions)
+        .json(new ApiResponse(204, {}, "User logged out"));
+});
+
 const getCurrentUser = asyncHandler(async (req, res) => {});
 const refreshAccessToken = asyncHandler(async (req, res) => {});
 const resetForgottenPassword = asyncHandler(async (req, res) => {});
