@@ -7,6 +7,7 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { generateTemporaryToken } from "../utils/tokens.js";
 import { sendEmail, emailVerificationMailGenContent } from "../utils/mail.js";
 import path from "path";
+import crypto from "crypto";
 
 const registerUser = asyncHandler(async (req, res) => {
     const { username, email, role, password } = req.body;
@@ -50,7 +51,7 @@ const registerUser = asyncHandler(async (req, res) => {
         subject: "Please verify your email",
         mailGenContent: emailVerificationMailGenContent(
             user.username,
-            `${req.protocol}://${req.get("host")}/api/v1/users/verify-email/${unHashedToken}`,
+            `${req.protocol}://${req.get("host")}/api/v1/users/verify/${unHashedToken}`,
         ),
     });
 
@@ -80,7 +81,44 @@ const registerUser = asyncHandler(async (req, res) => {
         );
 });
 
-const verifyEmail = asyncHandler(async (req, res) => {});
+const verifyEmail = asyncHandler(async (req, res) => {
+    const { emailVerificationToken } = req.params;
+    if (!emailVerificationToken) {
+        throw new ApiError(400, "Email verification token is missing");
+    }
+
+    const hashedToken = crypto
+        .createHash("sha256")
+        .update(emailVerificationToken)
+        .digest("hex");
+
+    const user = await prisma.user.findFirst({
+        where: {
+            emailVerificationToken: hashedToken,
+            emailVerificationExpiry: {
+                gt: new Date(),
+            },
+        },
+    });
+
+    if (!user) {
+        throw new ApiError(404, "Token is invalid or expired");
+    }
+
+    await prisma.user.update({
+        where: {
+            id: user.id,
+        },
+        data: {
+            emailVerificationToken: undefined,
+            emailVerificationExpiry: undefined,
+            isEmailVerified: true,
+        },
+    });
+
+    return res.status(200).json(new ApiResponse(200, "Email is verified"));
+});
+
 const loginUser = asyncHandler(async (req, res) => {});
 const resendVerificationEmail = asyncHandler(async (req, res) => {});
 const logOutUser = asyncHandler(async (req, res) => {});
