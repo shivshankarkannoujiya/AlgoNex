@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+    changeCurrentPassword,
     forgotPasswordRequest,
     getCurrentUser,
     loginUser,
@@ -7,6 +8,7 @@ import {
     refreshAccessToken,
     registerUser,
     resetForgottenPassword,
+    updateAccountDetails,
     verifyEmail,
 } from "../controllers/auth.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
@@ -14,8 +16,10 @@ import { validate } from "../middlewares/validator.middleware.js";
 import {
     userRegisterSchema,
     userLoginSchema,
-    forgotPasswordRequestSchema,
-    resetForgottenPasswordSchema,
+    userForgotPasswordRequestSchema,
+    userResetForgottenPasswordSchema,
+    userChangeCurrentPasswordSchema,
+    userUpdateAccountDetailsSchema,
 } from "../validators/auth.validators.js";
 import { isLoggedIn } from "../middlewares/auth.middleware.js";
 
@@ -35,13 +39,23 @@ router.route("/login").post(validate(userLoginSchema), loginUser);
 router.route("/refresh-token").post(refreshAccessToken);
 router
     .route("/forgot-password")
-    .post(validate(forgotPasswordRequestSchema), forgotPasswordRequest);
+    .post(validate(userForgotPasswordRequestSchema), forgotPasswordRequest);
 router
     .route("/reset-password/:resetToken")
-    .post(validate(resetForgottenPasswordSchema), resetForgottenPassword);
+    .post(validate(userResetForgottenPasswordSchema), resetForgottenPassword);
 
 /** @description protected routes */
 router.route("/logout").post(isLoggedIn, logOutUser);
-router.route("/me").get(getCurrentUser);
+router.route("/me").get(isLoggedIn, getCurrentUser);
+router
+    .route("/change-password")
+    .post(
+        isLoggedIn,
+        validate(userChangeCurrentPasswordSchema),
+        changeCurrentPassword,
+    );
+router
+    .route("/update-account")
+    .post(validate(userUpdateAccountDetailsSchema), updateAccountDetails);
 
 export default router;

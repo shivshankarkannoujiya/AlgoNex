@@ -398,8 +398,66 @@ const resetForgottenPassword = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, "password reset successfully"));
 });
 
-const changeCurrentPassword = asyncHandler(async (req, res) => {});
-const updateAccountDetails = asyncHandler(async (req, res) => {});
+const changeCurrentPassword = asyncHandler(async (req, res) => {
+    const { oldPassword, newPassword } = req.body;
+
+    const user = prisma.user.findUnique({
+        where: {
+            id: req.user?.id,
+        },
+    });
+
+    if (!user) {
+        throw new ApiError(404, "user not found");
+    }
+
+    const isPasswordValid = await isPasswordCorrect(oldPassword, user.password);
+    if (!isPasswordValid) {
+        throw new ApiError(400, "Invalid old password");
+    }
+
+    await prisma.user.update({
+        where: {
+            id: user.id,
+        },
+        data: {
+            password: newPassword,
+        },
+    });
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, "password changed successfully"));
+});
+
+const updateAccountDetails = asyncHandler(async (req, res) => {
+    const { username } = req.body;
+
+    const updatedUser = await prisma.user.update({
+        where: {
+            id: req.user?.id,
+        },
+        data: {
+            username,
+        },
+        select: {
+            id: true,
+            username: true,
+            email: true,
+            role: true,
+        },
+    });
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            {
+                user: updatedUser,
+            },
+            "User account updated successfully",
+        ),
+    );
+});
 
 export {
     registerUser,

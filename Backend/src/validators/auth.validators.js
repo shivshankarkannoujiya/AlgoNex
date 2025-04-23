@@ -14,14 +14,14 @@ const userLoginSchema = z.object({
     password: z.string(),
 });
 
-const resendVerificationEmailSchema = z.object({
+const userResendVerificationEmailSchema = z.object({
     email: z.string().email(),
 });
-const forgotPasswordRequestSchema = z.object({
+const userForgotPasswordRequestSchema = z.object({
     email: z.string().email(),
 });
 
-const resetForgottenPasswordSchema = z.object({
+const userResetForgottenPasswordSchema = z.object({
     params: z.object({
         resetToken: z.string().min(1, "Reset token is required"),
     }),
@@ -31,10 +31,21 @@ const resetForgottenPasswordSchema = z.object({
     }),
 });
 
+const userChangeCurrentPasswordSchema = z.object({
+    oldPassword: z.string().min(6),
+    newPassword: z.string().min(6),
+});
+
+const userUpdateAccountDetailsSchema = z.object({
+    username: z.string().min(3).optional(),
+});
+
 export {
     userRegisterSchema,
     userLoginSchema,
-    resendVerificationEmailSchema,
-    forgotPasswordRequestSchema,
-    resetForgottenPasswordSchema,
+    userResendVerificationEmailSchema,
+    userForgotPasswordRequestSchema,
+    userResetForgottenPasswordSchema,
+    userChangeCurrentPasswordSchema,
+    userUpdateAccountDetailsSchema,
 };
