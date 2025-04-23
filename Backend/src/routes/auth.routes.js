@@ -57,7 +57,7 @@ router
 router
     .route("/update-account")
     .post(
-        validate(isLoggedIn, userUpdateAccountDetailsSchema),
+        validate(isLoggedIn, validate(userUpdateAccountDetailsSchema)),
         updateAccountDetails,
     );
 
