@@ -3,6 +3,7 @@ import {
     getCurrentUser,
     loginUser,
     logOutUser,
+    refreshAccessToken,
     registerUser,
     verifyEmail,
 } from "../controllers/auth.controller.js";
@@ -27,6 +28,7 @@ router
 
 router.route("/verify/:emailVerificationToken").post(verifyEmail);
 router.route("/login").post(validate(userLoginSchema), loginUser);
+router.route("/refresh-token").post(refreshAccessToken);
 
 /** @description protected routes */
 router.route("/logout").post(isLoggedIn, logOutUser);

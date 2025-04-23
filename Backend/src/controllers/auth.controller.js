@@ -13,6 +13,7 @@ import {
 import { cookieOptions } from "../utils/constants.js";
 import path from "path";
 import crypto from "crypto";
+import jwt from "jsonwebtoken";
 
 const registerUser = asyncHandler(async (req, res) => {
     const { username, email, role, password } = req.body;
@@ -261,7 +262,57 @@ const getCurrentUser = asyncHandler(async (req, res) => {
         .status(200)
         .json(new ApiResponse(200, user, "Current user fetched successfully"));
 });
-const refreshAccessToken = asyncHandler(async (req, res) => {});
+
+const refreshAccessToken = asyncHandler(async (req, res) => {
+    const incommingRefreshToken =
+        req.cookies.refreshToken || req.body.refreshToken;
+
+    if (!incommingRefreshToken) {
+        throw new ApiError(401, "Unauthorized request");
+    }
+
+    try {
+        const decoded = jwt.verify(
+            incommingRefreshToken,
+            process.env.REFRESH_TOKEN_SECRET,
+        );
+        const user = await prisma.user.findUnique({
+            where: {
+                id: decoded.id,
+            },
+        });
+
+        if (!user) {
+            throw new ApiError(409, "Invalid refresh token");
+        }
+
+        if (incommingRefreshToken !== user?.refreshToken) {
+            throw new ApiError(400, "Refresh token is expired or used");
+        }
+
+        const { accessToken, refreshToken } =
+            await generateAccessAndRefreshToken(user.id);
+
+        await prisma.user.update({
+            where: {
+                id: user.id,
+            },
+            data: {
+                refreshToken,
+            },
+        });
+
+        return res
+            .status(200)
+            .cookie("accessToken", accessToken, cookieOptions)
+            .cookie("refreshToken", refreshToken, cookieOptions)
+            .json(new ApiResponse(200, "Access token is refreshed"));
+    } catch (error) {
+        console.error("Error while refreshing access token: ", error);
+        throw new ApiError(401, error?.message || "Invalid refresh token");
+    }
+});
+
 const resetForgottenPassword = asyncHandler(async (req, res) => {});
 const changeCurrentPassword = asyncHandler(async (req, res) => {});
 const updateAccountDetails = asyncHandler(async (req, res) => {});
