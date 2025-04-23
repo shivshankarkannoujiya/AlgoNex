@@ -56,6 +56,9 @@ router
     );
 router
     .route("/update-account")
-    .post(validate(userUpdateAccountDetailsSchema), updateAccountDetails);
+    .post(
+        validate(isLoggedIn, userUpdateAccountDetailsSchema),
+        updateAccountDetails,
+    );
 
 export default router;
