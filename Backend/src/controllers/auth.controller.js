@@ -4,7 +4,11 @@ import { ApiResponse } from "../utils/api-response.js";
 import { ApiError } from "../utils/api-error.js";
 import { UserRole } from "../generated/prisma/index.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
-import { sendEmail, emailVerificationMailGenContent } from "../utils/mail.js";
+import {
+    sendEmail,
+    emailVerificationMailGenContent,
+    forgotPasswordMailGenContent,
+} from "../utils/mail.js";
 import { isPasswordCorrect } from "../utils/checkPassword.js";
 import {
     generateAccessAndRefreshToken,
@@ -313,6 +317,52 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     }
 });
 
+const forgotPasswordRequest = asyncHandler(async (req, res) => {
+    const { email } = req.body;
+
+    const user = await prisma.user.findUnique({
+        where: {
+            email,
+        },
+    });
+
+    if (!user) {
+        throw new ApiError(404, "user not found");
+    }
+
+    const { unHashedToken, hashedToken, tokenExpiry } =
+        await generateTemporaryToken();
+
+    await prisma.user.update({
+        where: {
+            email,
+        },
+        data: {
+            forgotPasswordToken: hashedToken,
+            forgotPasswordExpiry: tokenExpiry,
+        },
+    });
+
+    await sendEmail({
+        email: user?.email,
+        subject: "Password reset request",
+        mailGenContent: forgotPasswordMailGenContent(
+            user.username,
+            `${process.env.FORGOT_PASSWORD_REDIRECT_URL}/${unHashedToken}`,
+        ),
+    });
+
+    return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                {},
+                "Password reset mail has been sent on your mail id",
+            ),
+        );
+});
+
 const resetForgottenPassword = asyncHandler(async (req, res) => {});
 const changeCurrentPassword = asyncHandler(async (req, res) => {});
 const updateAccountDetails = asyncHandler(async (req, res) => {});
@@ -325,6 +375,7 @@ export {
     logOutUser,
     getCurrentUser,
     refreshAccessToken,
+    forgotPasswordRequest,
     resetForgottenPassword,
     changeCurrentPassword,
     updateAccountDetails,

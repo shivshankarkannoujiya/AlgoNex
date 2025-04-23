@@ -17,5 +17,13 @@ const userLoginSchema = z.object({
 const resendVerificationEmailSchema = z.object({
     email: z.string().email(),
 });
+const forgotPasswordRequestSchema = z.object({
+    email: z.string().email(),
+});
 
-export { userRegisterSchema, userLoginSchema, resendVerificationEmailSchema };
+export {
+    userRegisterSchema,
+    userLoginSchema,
+    resendVerificationEmailSchema,
+    forgotPasswordRequestSchema,
+};

@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+    forgotPasswordRequest,
     getCurrentUser,
     loginUser,
     logOutUser,
@@ -12,6 +13,7 @@ import { validate } from "../middlewares/validator.middleware.js";
 import {
     userRegisterSchema,
     userLoginSchema,
+    forgotPasswordRequestSchema,
 } from "../validators/auth.validators.js";
 import { isLoggedIn } from "../middlewares/auth.middleware.js";
 
@@ -29,6 +31,9 @@ router
 router.route("/verify/:emailVerificationToken").post(verifyEmail);
 router.route("/login").post(validate(userLoginSchema), loginUser);
 router.route("/refresh-token").post(refreshAccessToken);
+router
+    .route("/forgot-password")
+    .post(validate(forgotPasswordRequestSchema), forgotPasswordRequest);
 
 /** @description protected routes */
 router.route("/logout").post(isLoggedIn, logOutUser);
