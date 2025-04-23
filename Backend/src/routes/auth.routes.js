@@ -6,6 +6,7 @@ import {
     logOutUser,
     refreshAccessToken,
     registerUser,
+    resetForgottenPassword,
     verifyEmail,
 } from "../controllers/auth.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
@@ -14,6 +15,7 @@ import {
     userRegisterSchema,
     userLoginSchema,
     forgotPasswordRequestSchema,
+    resetForgottenPasswordSchema,
 } from "../validators/auth.validators.js";
 import { isLoggedIn } from "../middlewares/auth.middleware.js";
 
@@ -34,6 +36,9 @@ router.route("/refresh-token").post(refreshAccessToken);
 router
     .route("/forgot-password")
     .post(validate(forgotPasswordRequestSchema), forgotPasswordRequest);
+router
+    .route("/reset-password/:resetToken")
+    .post(validate(resetForgottenPasswordSchema), resetForgottenPassword);
 
 /** @description protected routes */
 router.route("/logout").post(isLoggedIn, logOutUser);

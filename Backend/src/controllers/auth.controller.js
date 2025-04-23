@@ -363,7 +363,41 @@ const forgotPasswordRequest = asyncHandler(async (req, res) => {
         );
 });
 
-const resetForgottenPassword = asyncHandler(async (req, res) => {});
+const resetForgottenPassword = asyncHandler(async (req, res) => {
+    const { resetToken } = req.params;
+    const { newPassword } = req.body;
+
+    const hashedToken = crypto
+        .createHash("sha256")
+        .update(resetToken)
+        .digest("hex");
+
+    const user = await prisma.user.findUnique({
+        where: {
+            forgotPasswordToken: hashedToken,
+        },
+    });
+
+    if (!user) {
+        throw new ApiError(404, "Invalid reset token");
+    }
+
+    await prisma.user.update({
+        where: {
+            id: user.id,
+        },
+        data: {
+            forgotPasswordToken: null,
+            forgotPasswordExpiry: null,
+            password: newPassword,
+        },
+    });
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, "password reset successfully"));
+});
+
 const changeCurrentPassword = asyncHandler(async (req, res) => {});
 const updateAccountDetails = asyncHandler(async (req, res) => {});
 

@@ -21,9 +21,20 @@ const forgotPasswordRequestSchema = z.object({
     email: z.string().email(),
 });
 
+const resetForgottenPasswordSchema = z.object({
+    params: z.object({
+        resetToken: z.string().min(1, "Reset token is required"),
+    }),
+
+    body: z.object({
+        newPassword: z.string().min(6),
+    }),
+});
+
 export {
     userRegisterSchema,
     userLoginSchema,
     resendVerificationEmailSchema,
     forgotPasswordRequestSchema,
+    resetForgottenPasswordSchema,
 };
