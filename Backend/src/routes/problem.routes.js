@@ -4,7 +4,7 @@ import {
     createProblem,
     deleteProblemById,
     getAllProblems,
-    getAllProblemsSolvedByUser,
+    getAllProblemSolvedByUser,
     getProblemById,
     updateProblemById,
 } from "../controllers/problem.controller.js";
@@ -18,6 +18,6 @@ router.route("/update-problem/:id").put(isLoggedIn, isAdmin, updateProblemById);
 router
     .route("/delete-problem/:id")
     .delete(isLoggedIn, isAdmin, deleteProblemById);
-router.route("/get-solved-problem").get(isLoggedIn, getAllProblemsSolvedByUser);
+router.route("/get-solved-problem").get(isLoggedIn, getAllProblemSolvedByUser);
 
 export default router;
