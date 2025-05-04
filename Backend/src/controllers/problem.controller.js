@@ -239,7 +239,25 @@ const updateProblemById = asyncHandler(async (req, res) => {
     }
 });
 
-const deleteProblemById = asyncHandler(async (req, res) => {});
+const deleteProblemById = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+
+    const problem = await prisma.problem.findUnique({ where: { id } });
+    if (!problem) {
+        throw new ApiError(404, `Problem not found with id ${id}`);
+    }
+
+    await prisma.problem.delete({
+        where: {
+            id,
+        },
+    });
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, "Problem deleted successfully"));
+});
+
 const getAllProblemSolvedByUser = asyncHandler(async (req, res) => {});
 
 export {
