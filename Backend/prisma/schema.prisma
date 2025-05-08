@@ -44,27 +44,29 @@ model User {
   submission              Submission[]
 
   ProblemSolved ProblemSolved[]
+  Playlist      Playlist[]
 }
 
 model Problem {
-  id                String                 @id @default(uuid())
-  title             String
-  description       String
-  difficulty        ProblemDifficultyLevel
-  tags              String[]
-  userId            String
-  example           Json
-  constraints       String
-  hints             String?
-  editorial         String?
-  testcases         Json
-  codeSnippets      Json
-  referenceSolution Json
-  createdAt         DateTime               @default(now())
-  updatedAt         DateTime               @updatedAt
-  user              User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  submission        Submission[]
-  ProblemSolvedBy   ProblemSolved[]
+  id                 String                 @id @default(uuid())
+  title              String
+  description        String
+  difficulty         ProblemDifficultyLevel
+  tags               String[]
+  userId             String
+  example            Json
+  constraints        String
+  hints              String?
+  editorial          String?
+  testcases          Json
+  codeSnippets       Json
+  referenceSolution  Json
+  createdAt          DateTime               @default(now())
+  updatedAt          DateTime               @updatedAt
+  user               User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  submission         Submission[]
+  ProblemSolvedBy    ProblemSolved[]
+  ProblemsInPlaylist ProblemInPlaylist[]
 }
 
 model Submission {
@@ -117,4 +119,30 @@ model ProblemSolved {
   problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
 
   @@unique([userId, problemId])
+}
+
+model Playlist {
+  id          String              @id @default(uuid())
+  name        String
+  description String?
+  userId      String
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  problems    ProblemInPlaylist[]
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([name, userId])
+}
+
+model ProblemInPlaylist {
+  id         String   @id @default(uuid())
+  playlistId String
+  problemId  String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  playlist   Playlist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
+  problem    Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  @@unique([playlistId, problemId])
 }
