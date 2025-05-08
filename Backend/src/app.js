@@ -21,6 +21,7 @@ import authRouter from "./routes/auth.routes.js";
 import problemRouter from "./routes/problem.routes.js";
 import executionRouter from "./routes/codeExecution.routes.js";
 import submissionRouter from "./routes/submission.routes.js";
+import playlistRouter from "./routes/playlist.routes.js";
 
 /** @description initialize api routes */
 app.use("/api/v1/health", healthcheckRouter);
@@ -28,5 +29,6 @@ app.use("/api/v1/users", authRouter);
 app.use("/api/v1/problems", problemRouter);
 app.use("/api/v1/code", executionRouter);
 app.use("/api/v1/submission", submissionRouter);
+app.use("/api/v1/playlist", playlistRouter);
 
 export default app;
