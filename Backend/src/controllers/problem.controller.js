@@ -277,7 +277,7 @@ const getAllProblemSolvedByUser = asyncHandler(async (req, res) => {
     });
 
     if (problems.length === 0) {
-        throw new ApiError(404, "No probles solved by the user");
+        throw new ApiError(404, "No problems solved by the user");
     }
 
     return res
