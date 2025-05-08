@@ -259,7 +259,36 @@ const deleteProblemById = asyncHandler(async (req, res) => {
 });
 
 const getAllProblemSolvedByUser = asyncHandler(async (req, res) => {
-    
+    const problems = await prisma.problem.findMany({
+        where: {
+            ProblemSolvedBy: {
+                some: {
+                    userId: req.user?.id,
+                },
+            },
+        },
+        include: {
+            ProblemSolvedBy: {
+                where: {
+                    userId: req.user?.id,
+                },
+            },
+        },
+    });
+
+    if (problems.length === 0) {
+        throw new ApiError(404, "No probles solved by the user");
+    }
+
+    return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                { problems: problems },
+                "Problems fetched successfully",
+            ),
+        );
 });
 
 export {
