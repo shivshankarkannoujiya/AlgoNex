@@ -258,7 +258,9 @@ const deleteProblemById = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, "Problem deleted successfully"));
 });
 
-const getAllProblemSolvedByUser = asyncHandler(async (req, res) => {});
+const getAllProblemSolvedByUser = asyncHandler(async (req, res) => {
+    
+});
 
 export {
     createProblem,
