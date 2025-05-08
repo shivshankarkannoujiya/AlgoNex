@@ -25,6 +25,6 @@ import executionRouter from "./routes/codeExecution.routes.js";
 app.use("/api/v1/health", healthcheckRouter);
 app.use("/api/v1/users", authRouter);
 app.use("/api/v1/problems", problemRouter);
-app.use("/api/v1/executeCode", executionRouter);
+app.use("/api/v1/code", executionRouter);
 
 export default app;

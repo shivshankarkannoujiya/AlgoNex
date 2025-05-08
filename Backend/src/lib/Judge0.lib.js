@@ -14,6 +14,17 @@ export const getJudge0LanguageId = (language) => {
     return id;
 };
 
+export const getLanguageNameById = (language_id) => {
+    const LANGUAGE_NAMES = {
+        74: "TypeScript",
+        71: "PYTHON",
+        62: "JAVA",
+        63: "JAVASCRIPT",
+    };
+
+    return LANGUAGE_NAMES[language_id] || "Unknown";
+};
+
 /**
  * @description
  * This method will hit the judge0 end point
