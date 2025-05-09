@@ -52,7 +52,7 @@ const createProblem = asyncHandler(async (req, res) => {
 
             for (let i = 0; i < results.length; i++) {
                 const result = results[i];
-                console.log("RESULT---- ", result);
+                console.log("RESULT----> ", result);
 
                 console.log(
                     `Testcase ${i + 1} and Language ${language} --- result ${JSON.stringify(result.status.description)}`,

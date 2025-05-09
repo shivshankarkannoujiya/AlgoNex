@@ -1,0 +1,186 @@
+{
+    "title": "Add Two Numbers",
+    "description": "Given two numbers a and b add them up and return the outout",
+    "difficulty": "EASY",
+    "tags": [
+        "math",
+        "operators",
+        "addition"
+    ],
+    "examples": {
+        "PYTHON": {
+            "input": "3 7",
+            "output": "10",
+            "explanation": "Adding 3 and 7 gives 10."
+        },
+        "JAVASCRIPT": {
+            "input": "-5 12",
+            "output": "7",
+            "explanation": "Adding -5 and 12 gives 7."
+        }
+    },
+    "constraints": "-10^9 ≤ a, b ≤ 10^9",
+    "testcases": [
+        {
+            "input": "100 200",
+            "output": "300"
+        },
+        {
+            "input": "-500 -600",
+            "output": "-1100"
+        },
+        {
+            "input": "0 0",
+            "output": "0"
+        }
+    ],
+ "codeSnippets": {
+        "JAVASCRIPT": "const fs = require('fs');\n\nfunction addTwoNumbers(a, b) {\n    // Write your code here\n    // Return the sum of a and b\n    return a + b;\n}\n\n// Reading input from stdin (using fs to read all input)\nconst input = fs.readFileSync(0, 'utf-8').trim();\nconst [a, b] = input.split(' ').map(Number);\n\nconsole.log(addTwoNumbers(a, b));",
+        "PYTHON": "def add_two_numbers(a, b):\n    # Write your code here\n    # Return the sum of a and b\n    return a + b\n\nimport sys\ninput_line = sys.stdin.read()\na, b = map(int, input_line.split())\nprint(add_two_numbers(a, b))",
+        "JAVA": "import java.util.Scanner;\n\npublic class Main {\n    public static int addTwoNumbers(int a, int b) {\n        // Write your code here\n        // Return the sum of a and b\n        return a + b;\n    }\n\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int a = sc.nextInt();\n        int b = sc.nextInt();\n        System.out.println(addTwoNumbers(a, b));\n    }\n}"
+    },
+    "referenceSolutions": {
+        "JAVASCRIPT": "const fs = require('fs');\n\n// Reading input from stdin (using fs to read all input)\nconst input = fs.readFileSync(0, 'utf-8').trim();\nconst [a, b] = input.split(' ').map(Number);\n\nconsole.log(a + b);",
+        "PYTHON": "import sys\ninput_line = sys.stdin.read()\na, b = map(int, input_line.split())\nprint(a + b)",
+        "JAVA": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int a = sc.nextInt();\n        int b = sc.nextInt();\n        System.out.println(a + b);\n    }\n}"
+    }
+}
+
+
+{
+    "title": "Multiply Two Numbers",
+    "description": "Given two integers, return their product.",
+    "difficulty": "EASY",
+    "tags": ["Math", "Beginner"],
+    "example": {
+        "PYTHON": {
+            "input": "4 5",
+            "output": "20",
+            "explanation": "Multiplying 4 and 5 gives 20"
+        },
+        "JAVASCRIPT": {
+            "input": "-3 7",
+            "output": "-21",
+            "explanation": "Multiplying -3 and 7 gives -21"
+        }
+    },
+    "constraints": "-10^5 <= a, b <= 10^5",
+    "testcases": [
+        {
+            "input": "10 20",
+            "output": "200"
+        },
+        {
+            "input": "-15 3",
+            "output": "-45"
+        },
+        {
+            "input": "0 100",
+            "output": "0"
+        }
+    ],
+    "codeSnippets": {
+        "JAVASCRIPT": "const fs = require('fs');\n\nfunction multiply(a, b) {\n    // Write your code here\n    return a * b;\n}\n\nconst input = fs.readFileSync(0, 'utf-8').trim();\nconst [a, b] = input.split(' ').map(Number);\n\nconsole.log(multiply(a, b));",
+        "PYTHON": "def multiply(a, b):\n    # Write your code here\n    return a * b\n\nimport sys\ninput_line = sys.stdin.read()\na, b = map(int, input_line.split())\nprint(multiply(a, b))",
+        "JAVA": "import java.util.Scanner;\n\npublic class Main {\n    public static int multiply(int a, int b) {\n        // Write your code here\n        return a * b;\n    }\n\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int a = sc.nextInt();\n        int b = sc.nextInt();\n        System.out.println(multiply(a, b));\n    }\n}"
+    },
+    "referenceSolution": {
+        "JAVASCRIPT": "const fs = require('fs');\n\nconst input = fs.readFileSync(0, 'utf-8').trim();\nconst [a, b] = input.split(' ').map(Number);\n\nconsole.log(a * b);",
+        "PYTHON": "import sys\ninput_line = sys.stdin.read()\na, b = map(int, input_line.split())\nprint(a * b)",
+        "JAVA": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int a = sc.nextInt();\n        int b = sc.nextInt();\n        System.out.println(a * b);\n    }\n}"
+    }
+}
+
+{
+    "title": "Two Sum",
+    "description": "Given an array of integers and a target sum, return the indices of the two numbers that add up to the target.",
+    "difficulty": "EASY",
+    "tags": ["Array", "Hash Table", "Two Pointers"],
+    "hints": "Use a hash map to store each number and its index while traversing the array.",
+    "editorial": "To solve this problem efficiently, iterate through the array and for each element, calculate its complement (target - current element). Check if the complement is already in the hash map. If it is, return the indices. Otherwise, store the current number and its index in the map. This approach ensures a single pass through the array and a time complexity of O(n).",
+    "example": {
+        "PYTHON": {
+            "input": "5\n2 7 11 15 1\n9",
+            "output": "0 1",
+            "explanation": "The numbers at index 0 and 1 (2 + 7) sum up to 9."
+        },
+        "JAVASCRIPT": {
+            "input": "4\n3 2 4 6\n6",
+            "output": "1 2",
+            "explanation": "The numbers at index 1 and 2 (2 + 4) sum up to 6."
+        }
+    },
+    "constraints": "2 <= n <= 10^4\n-10^9 <= nums[i] <= 10^9\n-10^9 <= target <= 10^9\nExactly one solution exists.",
+    "testcases": [
+        {
+            "input": "6\n3 3 6 1 2 8\n6",
+            "output": "0 1"
+        },
+        {
+            "input": "3\n1 2 3\n4",
+            "output": "0 2"
+        },
+        {
+            "input": "4\n0 4 3 0\n0",
+            "output": "0 3"
+        }
+    ],
+    "codeSnippets": {
+        "JAVASCRIPT": "const fs = require('fs');\n\nfunction twoSum(nums, target) {\n    const map = new Map();\n    for (let i = 0; i < nums.length; i++) {\n        const complement = target - nums[i];\n        if (map.has(complement)) {\n            return [map.get(complement), i];\n        }\n        map.set(nums[i], i);\n    }\n    return [];\n}\n\nconst input = fs.readFileSync(0, 'utf-8').trim().split('\\n');\nconst n = parseInt(input[0]);\nconst nums = input[1].split(' ').map(Number);\nconst target = parseInt(input[2]);\n\nconsole.log(twoSum(nums, target).join(' '));",
+        "PYTHON": "def two_sum(nums, target):\n    num_map = {}\n    for i, num in enumerate(nums):\n        diff = target - num\n        if diff in num_map:\n            return [num_map[diff], i]\n        num_map[num] = i\n    return []\n\nimport sys\nlines = sys.stdin.read().strip().split('\\n')\nn = int(lines[0])\nnums = list(map(int, lines[1].split()))\ntarget = int(lines[2])\n\nprint(' '.join(map(str, two_sum(nums, target))))",
+        "JAVA": "import java.util.*;\n\npublic class Main {\n    public static int[] twoSum(int[] nums, int target) {\n        Map<Integer, Integer> map = new HashMap<>();\n        for (int i = 0; i < nums.length; i++) {\n            int complement = target - nums[i];\n            if (map.containsKey(complement)) {\n                return new int[] { map.get(complement), i };\n            }\n            map.put(nums[i], i);\n        }\n        return new int[] {};\n    }\n\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        int[] nums = new int[n];\n        for (int i = 0; i < n; i++) nums[i] = sc.nextInt();\n        int target = sc.nextInt();\n        int[] result = twoSum(nums, target);\n        System.out.println(result[0] + \" \" + result[1]);\n    }\n}"
+    },
+    "referenceSolution": {
+        "JAVASCRIPT": "const fs = require('fs');\nconst input = fs.readFileSync(0, 'utf-8').trim().split('\\n');\nconst n = parseInt(input[0]);\nconst nums = input[1].split(' ').map(Number);\nconst target = parseInt(input[2]);\n\nconst map = new Map();\nfor (let i = 0; i < nums.length; i++) {\n    const complement = target - nums[i];\n    if (map.has(complement)) {\n        console.log(`${map.get(complement)} ${i}`);\n        break;\n    }\n    map.set(nums[i], i);\n}",
+        "PYTHON": "import sys\nlines = sys.stdin.read().strip().split('\\n')\nn = int(lines[0])\nnums = list(map(int, lines[1].split()))\ntarget = int(lines[2])\n\nnum_map = {}\nfor i, num in enumerate(nums):\n    diff = target - num\n    if diff in num_map:\n        print(num_map[diff], i)\n        break\n    num_map[num] = i",
+        "JAVA": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        int[] nums = new int[n];\n        for (int i = 0; i < n; i++) nums[i] = sc.nextInt();\n        int target = sc.nextInt();\n\n        Map<Integer, Integer> map = new HashMap<>();\n        for (int i = 0; i < n; i++) {\n            int diff = target - nums[i];\n            if (map.containsKey(diff)) {\n                System.out.println(map.get(diff) + \" \" + i);\n                break;\n            }\n            map.put(nums[i], i);\n        }\n    }\n}"
+    }
+}
+
+
+{
+    "title": "Divide Two Numbers",
+    "description": "Given two integers a and b, return the result of a divided by b.",
+    "difficulty": "EASY",
+    "tags": ["Math", "Beginner"],
+    "example": {
+      "PYTHON": {
+        "input": "10 2",
+        "output": "5",
+        "explanation": "Dividing 10 by 2 gives 5"
+      },
+      "JAVASCRIPT": {
+        "input": "9 3",
+        "output": "3",
+        "explanation": "Dividing 9 by 3 gives 3"
+      }
+    },
+    "constraints": "-10^9 <= a, b <= 10^9\nb ≠ 0",
+    "testcases": [
+      {
+        "input": "100 10",
+        "output": "10"
+      },
+      {
+        "input": "-60 -5",
+        "output": "12"
+      },
+      {
+        "input": "7 2",
+        "output": "3"
+      }
+    ],
+    "hints": "Use integer division. Avoid using built-in division if the problem restricts it.",
+    "editorial": "This problem is a basic math problem involving integer division. If your language supports integer division directly, use that. Otherwise, cast the result to integer or use floor division where needed.",
+    "codeSnippets": {
+      "JAVASCRIPT": "const fs = require('fs');\n\nfunction divideTwoNumbers(a, b) {\n    // Write your code here\n    return Math.floor(a / b);\n}\n\nconst input = fs.readFileSync(0, 'utf-8').trim();\nconst [a, b] = input.split(' ').map(Number);\nconsole.log(divideTwoNumbers(a, b));",
+      "PYTHON": "def divide_two_numbers(a, b):\n    # Write your code here\n    return a // b\n\nimport sys\ninput_line = sys.stdin.read()\na, b = map(int, input_line.split())\nprint(divide_two_numbers(a, b))",
+      "JAVA": "import java.util.Scanner;\n\npublic class Main {\n    public static int divideTwoNumbers(int a, int b) {\n        // Write your code here\n        return a / b;\n    }\n\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int a = sc.nextInt();\n        int b = sc.nextInt();\n        System.out.println(divideTwoNumbers(a, b));\n    }\n}"
+    },
+    "referenceSolution": {
+      "JAVASCRIPT": "const fs = require('fs');\nconst input = fs.readFileSync(0, 'utf-8').trim();\nconst [a, b] = input.split(' ').map(Number);\nconsole.log(Math.floor(a / b));",
+      "PYTHON": "import sys\na, b = map(int, sys.stdin.read().split())\nprint(a // b)",
+      "JAVA": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int a = sc.nextInt();\n        int b = sc.nextInt();\n        System.out.println(a / b);\n    }\n}"
+    }
+  }
+  
