@@ -35,10 +35,13 @@ const getSubmissionForProblem = asyncHandler(async (req, res) => {
         throw new ApiError(400, "userId and problemId is required");
     }
 
-    const submissions = await prisma.submission.findUnique({
+    const submissions = await prisma.submission.findMany({
         where: {
             userId,
             problemId,
+        },
+        orderBy: {
+            createdAt: "desc",
         },
     });
 
