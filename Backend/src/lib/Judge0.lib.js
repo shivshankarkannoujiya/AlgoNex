@@ -110,7 +110,6 @@ export const pollBatchResults = async (tokens) => {
                 },
             );
 
-            
             const results = data.submissions;
             console.log(`<-------------- Printing Result --------->`);
             console.log(results);

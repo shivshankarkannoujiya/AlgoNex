@@ -160,7 +160,7 @@ const executeCode = asyncHandler(async (req, res) => {
 });
 
 const runCode = asyncHandler(async (req, res) => {
-    const { source_code, language_id, stdin } = req.body;
+    const { source_code, language_id, stdin, expected_outputs } = req.body;
 
     if (!Array.isArray(stdin) || stdin.length === 0) {
         throw new ApiError(400, "Invalid or missing test cases");
@@ -175,11 +175,60 @@ const runCode = asyncHandler(async (req, res) => {
     const submitResponse = await submitBatch(submissions);
     const tokens = submitResponse.map((res) => res.token);
 
-    const result = await pollBatchResults(tokens);
+    const results = await pollBatchResults(tokens);
+
+    let allPassed = true;
+    let passedCount = 0;
+    let failedCount = 0;
+    let failedTestCases = [];
+    const detailedResult = results.map((result, index) => {
+        const stdout = result.stdout?.trim() || "";
+        const expected_output = expected_outputs[index]?.trim();
+        const passed = stdout === expected_output; // Check if output matches expected
+
+        if (passed) {
+            passedCount++;
+        } else {
+            failedCount++;
+            failedTestCases.push(index + 1); // Collect the failed test cases
+            allPassed = false;
+        }
+
+        return {
+            testCase: index + 1,
+            passed,
+            stdout,
+            expected: expected_output,
+            stderr: result.stderr,
+            compileOutput: result.compile_output || null,
+            status: result.status.description,
+            memory: result.memory ? `${result.memory}KB` : undefined,
+            time: result.time ? `${result.time}s` : undefined,
+        };
+    });
+
+    let statusMessage;
+    if (allPassed) {
+        statusMessage = "All test cases passed!";
+    } else {
+        statusMessage = `${passedCount} / ${stdin.length} test case(s) passed.`;
+        statusMessage +=
+            failedCount > 0 ? ` ${failedCount} test case(s) failed.` : "";
+        statusMessage +=
+            failedTestCases.length > 0
+                ? ` Failed test case(s): ${failedTestCases.join(", ")}.`
+                : "";
+    }
 
     return res
         .status(200)
-        .json(new ApiResponse(200, { results: result }, "Code executed!"));
+        .json(
+            new ApiResponse(
+                200,
+                { statusMessage, results: detailedResult },
+                "Code executed!",
+            ),
+        );
 });
 
 export { executeCode, runCode };
