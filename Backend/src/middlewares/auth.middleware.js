@@ -7,7 +7,7 @@ import { UserRole } from "../generated/prisma/index.js";
 const isLoggedIn = asyncHandler(async (req, _, next) => {
     const token =
         req.cookies?.accessToken ||
-        req.header("Authorizarion")?.replace("Bearer ", "");
+        req.header("Authorization")?.replace("Bearer ", "");
 
     if (!token) {
         throw new ApiError(401, "Unauthorized access");

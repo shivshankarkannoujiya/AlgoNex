@@ -36,9 +36,16 @@ const registerUser = asyncHandler(async (req, res) => {
 
     if (req.files?.avatar?.[0]?.path) {
         avatarLocalPath = path.resolve(req.files?.avatar[0]?.path);
-        uploadedAvatar = await uploadOnCloudinary(avatarLocalPath);
-        avatarUrl = uploadedAvatar.secure_url;
+        try {
+            uploadedAvatar = await uploadOnCloudinary(avatarLocalPath);
+            avatarUrl = uploadedAvatar.secure_url;
+        } catch (error) {
+            console.error("Cloudinary upload failed", error.message);
+        }
     }
+
+    const { unHashedToken, hashedToken, tokenExpiry } =
+        await generateTemporaryToken();
 
     const user = await prisma.user.create({
         data: {
@@ -46,34 +53,10 @@ const registerUser = asyncHandler(async (req, res) => {
             email,
             password,
             role: role ?? UserRole.USER,
-            ...(avatarUrl && { avatarUrl: avatarUrl }),
-            ...(avatarLocalPath && { avatarLocalPath: avatarLocalPath }),
-        },
-    });
-
-    const { unHashedToken, hashedToken, tokenExpiry } =
-        await generateTemporaryToken();
-
-    await prisma.user.update({
-        where: { id: user.id },
-        data: {
+            avatarUrl,
+            avatarLocalPath,
             emailVerificationToken: hashedToken,
             emailVerificationExpiry: tokenExpiry,
-        },
-    });
-
-    await sendEmail({
-        email: user?.email,
-        subject: "Please verify your email",
-        mailGenContent: emailVerificationMailGenContent(
-            user.username,
-            `${req.protocol}://${req.get("host")}/api/v1/users/verify/${unHashedToken}`,
-        ),
-    });
-
-    const createdUser = await prisma.user.findUnique({
-        where: {
-            id: user.id,
         },
         select: {
             id: true,
@@ -83,16 +66,21 @@ const registerUser = asyncHandler(async (req, res) => {
         },
     });
 
-    if (!createdUser) {
-        throw new ApiError(500, "Something went wrong while registering user");
-    }
+    sendEmail({
+        email: user?.email,
+        subject: "Please verify your email",
+        mailGenContent: emailVerificationMailGenContent(
+            user.username,
+            `${req.protocol}://${req.get("host")}/api/v1/users/verify/${unHashedToken}`,
+        ),
+    });
 
     return res
         .status(201)
         .json(
             new ApiResponse(
                 201,
-                { user: createdUser },
+                { user: user },
                 "Users registered successfully and verification email has been sent on your email.",
             ),
         );
