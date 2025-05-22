@@ -34,7 +34,7 @@ router
         registerUser,
     );
 
-router.route("/verify/:emailVerificationToken").post(verifyEmail);
+router.route("/verify/:emailVerificationToken").get(verifyEmail);
 router.route("/login").post(validate(userLoginSchema), loginUser);
 router.route("/refresh-token").post(refreshAccessToken);
 router

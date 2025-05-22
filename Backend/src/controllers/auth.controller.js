@@ -23,7 +23,7 @@ const registerUser = asyncHandler(async (req, res) => {
     const { username, email, role, password } = req.body;
     const existingUser = await prisma.user.findFirst({
         where: {
-            OR: [{ username }, { email }],
+            OR: [{ username: username }, { email: email }],
         },
     });
 
@@ -31,17 +31,23 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new ApiError(400, "User with email or username already exist");
     }
 
-    const avatarLocalPath = path.resolve(req.files?.avatar[0]?.path);
-    const avatar = await uploadOnCloudinary(avatarLocalPath);
+    let avatarLocalPath = null;
+    let avatarUrl = null;
+
+    if (req.files?.avatar?.[0]?.path) {
+        avatarLocalPath = path.resolve(req.files?.avatar[0]?.path);
+        uploadedAvatar = await uploadOnCloudinary(avatarLocalPath);
+        avatarUrl = uploadedAvatar.secure_url;
+    }
 
     const user = await prisma.user.create({
         data: {
             username,
             email,
-            avatarUrl: avatar.secure_url,
-            avatarLocalPath,
             password,
             role: role ?? UserRole.USER,
+            ...(avatarUrl && { avatarUrl: avatarUrl }),
+            ...(avatarLocalPath && { avatarLocalPath: avatarLocalPath }),
         },
     });
 
