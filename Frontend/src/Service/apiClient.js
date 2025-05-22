@@ -83,5 +83,5 @@ class ApiClient {
 }
 
 
-const apiClinet = new ApiClient();
-export default apiClinet
+const apiClient = new ApiClient();
+export default apiClient

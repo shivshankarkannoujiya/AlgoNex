@@ -1,27 +1,44 @@
-import React from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { logoutUser } from "../../features/auth/authThunks";
 import { resetAuthState } from "../../features/auth/authSlice";
+import { logoutUser } from "../../features/auth/authThunks";
+import { useState } from "react";
 
 const SignoutBtn = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-  const handleSignOut = async () => {
-    await dispatch(logoutUser());
-    dispatch(resetAuthState());
-    navigate("/login");
-  };
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
-  return (
-    <button
-      onClick={handleSignOut}
-      className="inline-block px-6 py-2 duration-200 hover:bg-blue-100 rounded-full"
-    >
-      Sign Out
-    </button>
-  );
+    const handleSignOut = async () => {
+        try {
+            setLoading(true);
+            await dispatch(logoutUser()).unwrap();
+            dispatch(resetAuthState());
+            navigate("/login");
+        } catch (error) {
+            setError("Logout failed. Try again.");
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <div className="flex flex-col items-start">
+            <button
+                onClick={handleSignOut}
+                disabled={loading}
+                className={`w-full text-left text-red-600 hover:bg-red-100 px-4 py-2 rounded-md transition text-sm ${
+                    loading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+            >
+                {loading ? "Signing out..." : "Sign Out"}
+            </button>
+            {error && <p className="text-xs text-red-500 mt-1 px-4">{error}</p>}
+        </div>
+    );
 };
 
 export default SignoutBtn;
