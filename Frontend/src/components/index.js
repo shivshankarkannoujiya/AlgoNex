@@ -15,6 +15,9 @@ import Header from "./Header/Header";
 /**@description Footer Components */
 import Footer from "./Footer/Footer";
 
+/**@description Problem Components */
+import FavoritesPanel from "./Problem/FavouritePanel";
+import QuestionListPanel from "./Problem/QuestionListPanel";
 
 export {
     Button,
@@ -25,7 +28,7 @@ export {
     SignoutBtn,
     Header,
     Footer,
-    AuthLayout
-}
-
-
+    AuthLayout,
+    FavoritesPanel,
+    QuestionListPanel,
+};

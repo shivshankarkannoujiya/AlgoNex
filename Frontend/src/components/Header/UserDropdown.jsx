@@ -22,16 +22,14 @@ const UserDropdown = ({ user }) => {
         <div className="relative" ref={ref}>
             <button
                 onClick={() => setOpen(!open)}
-                className="flex items-center gap-2 px-3 py-1 hover:bg-gray-100 rounded-md"
+                className="flex items-center gap-2 px-3 py-1 rounded-md cursor-pointer"
             >
                 <img
-                    src={user?.avatar || "/default-avatar.png"}
+                    src={user?.avatar || "https://avatar.iran.liara.run/public/boy"}
                     alt="avatar"
-                    className="w-8 h-8 rounded-full"
+                    className="w-10 h-10 rounded-full"
                 />
-                <span className="text-sm font-medium">
-                    {user?.username || "User"}
-                </span>
+
             </button>
 
             {open && (
@@ -47,6 +45,12 @@ const UserDropdown = ({ user }) => {
                         className="block px-4 py-2 text-sm hover:bg-gray-100 rounded-md"
                     >
                         My Submissions
+                    </Link>
+                    <Link
+                        to="/mylist"
+                        className="block px-4 py-2 text-sm hover:bg-gray-100 rounded-md"
+                    >
+                        Favourite List
                     </Link>
                     <SignoutBtn />
                 </div>
