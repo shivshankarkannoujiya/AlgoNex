@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import SignoutBtn from "../Auth/SignOutButton";
 
 const UserDropdown = ({ user }) => {
-    console.log(user?.role);
     const [open, setOpen] = useState(false);
+    const location = useLocation();
     const ref = useRef();
 
     const handleClickOutside = (e) => {
@@ -12,6 +12,10 @@ const UserDropdown = ({ user }) => {
             setOpen(false);
         }
     };
+
+    useEffect(() => {
+        setOpen(false);
+    }, [location.pathname]);
 
     useEffect(() => {
         document.addEventListener("mousedown", handleClickOutside);
@@ -30,8 +34,9 @@ const UserDropdown = ({ user }) => {
                         user?.avatar ||
                         "https://avatar.iran.liara.run/public/boy"
                     }
+                    loading="lazy"
                     alt="avatar"
-                    className="w-10 h-10 rounded-full"
+                    className="w-10 h-10 p-1 rounded-full border-2 border-gray-950"
                 />
             </button>
 
@@ -39,21 +44,18 @@ const UserDropdown = ({ user }) => {
                 <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg border rounded-md z-50 p-2 space-y-2">
                     <Link
                         to="/profile"
-                        onClick={() => setOpen(false)}
                         className="block px-4 py-2 text-sm hover:bg-gray-100 rounded-md"
                     >
                         Profile
                     </Link>
                     <Link
                         to="/submissions"
-                        onClick={() => setOpen(false)}
                         className="block px-4 py-2 text-sm hover:bg-gray-100 rounded-md"
                     >
                         My Submissions
                     </Link>
                     <Link
                         to="/mylist"
-                        onClick={() => setOpen(false)}
                         className="block px-4 py-2 text-sm hover:bg-gray-100 rounded-md"
                     >
                         Favourite List
@@ -61,7 +63,6 @@ const UserDropdown = ({ user }) => {
                     {user?.role === "ADMIN" && (
                         <Link
                             to="/create-problem"
-                            onClick={() => setOpen(false)}
                             className="block px-4 py-2 text-sm hover:bg-gray-100 rounded-md"
                         >
                             Add Problem

@@ -10,7 +10,6 @@ const isLoggedIn = asyncHandler(async (req, _, next) => {
         req.header("Authorization")?.replace("Bearer ", "");
 
     if (!token) {
-        console.warn("No access token found in request")
         throw new ApiError(401, "Unauthorized access");
     }
 

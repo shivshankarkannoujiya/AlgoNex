@@ -6,7 +6,7 @@ const loginUser = createAsyncThunk(
     async ({ email, password }, thunkAPI) => {
         try {
             const res = await apiClient.login(email, password);
-            localStorage.setItem("isLoggedIn", "true");
+                  sessionStorage.setItem("isLoggedIn", "true");
             return res.data.user;
         } catch (error) {
             return thunkAPI.rejectWithValue(error.message);
@@ -19,7 +19,6 @@ const signupUser = createAsyncThunk(
     async ({ username, email, password }, thunkAPI) => {
         try {
             const res = await apiClient.signup(username, email, password);
-            localStorage.setItem("isLoggedIn", "true");
             return res.data.user;
         } catch (error) {
             return thunkAPI.rejectWithValue(error.message);
@@ -31,15 +30,15 @@ const getCurrentUser = createAsyncThunk("auth/getMe", async (_, thunkAPI) => {
     try {
         const res = await apiClient.getMe();
 
-        if (res?.data?.user) {
-            localStorage.setItem("isLoggedIn", "true");
-            return res.data.user;
+        if (res.data) {
+            console.log("getMe response:", res);
+            console.log("FROM getCurrentUser: ", res.data);
+            return res.data;
         } else {
             throw new Error("User not found");
         }
     } catch (error) {
         console.error("getCurrentUser error:", error.message);
-        localStorage.removeItem("isLoggedIn");
         return thunkAPI.rejectWithValue(error.message);
     }
 });
@@ -47,7 +46,7 @@ const getCurrentUser = createAsyncThunk("auth/getMe", async (_, thunkAPI) => {
 const logoutUser = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
     try {
         await apiClient.logout();
-        localStorage.removeItem("isLoggedIn");
+        sessionStorage.removeItem("isLoggedIn");
     } catch (error) {
         return thunkAPI.rejectWithValue(error.message);
     }

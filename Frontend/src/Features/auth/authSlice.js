@@ -30,7 +30,6 @@ const authSlice = createSlice({
         const handlePending = (state) => {
             state.loading = true;
             state.error = null;
-            state.status = "loading";
         };
 
         const handleRejected = (state, action) => {

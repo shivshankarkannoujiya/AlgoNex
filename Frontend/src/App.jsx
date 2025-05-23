@@ -1,17 +1,26 @@
 import { useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getCurrentUser } from "./features/auth/authThunks";
 import { Outlet } from "react-router-dom";
 import { Header } from "./components/index.js";
 
 const App = () => {
     const dispatch = useDispatch();
+    const { loading } = useSelector((state) => state.auth);
 
     useEffect(() => {
         dispatch(getCurrentUser());
     }, [dispatch]);
+
+    if (loading) {
+        return (
+            <div className="h-screen flex items-center justify-center text-2xl">
+                Loading...
+            </div>
+        );
+    }
 
     return (
         <>
