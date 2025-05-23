@@ -1,49 +1,50 @@
 class ApiClient {
-
     constructor() {
         this.baseUrl = "http://localhost:3000/api/v1";
         this.defaultHeaders = {
             "Content-Type": "application/json",
             Accept: "application/json",
-        }
+        };
     }
 
     async customFetch(endpoint, options = {}, retry = true) {
-        
         try {
-            const url = `${this.baseUrl}${endpoint}`
-            const headers = { ...this.defaultHeaders, ...options?.headers }
-            
+            const url = `${this.baseUrl}${endpoint}`;
+            const headers = { ...this.defaultHeaders, ...options?.headers };
+
             const config = {
                 ...options,
                 headers,
                 credentials: "include",
-            }
-    
+            };
+
             const response = await fetch(url, config);
-    
+
+            // Handle expired token
             if (response.status === 401 && retry) {
-                const refreshResponse = await fetch(`${this.baseUrl}/users/refresh-token`, {
-                    method: "POST",
-                    credentials: "include"
-                })
-    
+                const refreshResponse = await fetch(
+                    `${this.baseUrl}/users/refresh-token`,
+                    {
+                        method: "POST",
+                        credentials: "include",
+                    },
+                );
+
                 if (refreshResponse.ok) {
                     return this.customFetch(endpoint, options, false);
                 } else {
                     throw new Error("Session expired. Please log in again.");
                 }
             }
-    
-    
+
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-    
-            const data = await response.json()
+
+            const data = await response.json();
             return data;
         } catch (error) {
-            console.error("API ERROR: ", error.message)
+            console.error("API ERROR: ", error.message);
             throw error;
         }
     }
@@ -51,28 +52,25 @@ class ApiClient {
     async signup(username, email, password) {
         return this.customFetch("/users/signup", {
             method: "POST",
-            body: JSON.stringify({username, email, password})
-        })
-    }
-
-
-    async verifyEmail(token) {
-        return this.customFetch(`/users/verify/${token}`,{
-                method: "GET" 
-                
+            body: JSON.stringify({ username, email, password }),
         });
     }
-  
+
+    async verifyEmail(token) {
+        return this.customFetch(`/users/verify/${token}`, {
+            method: "GET",
+        });
+    }
 
     async login(email, password) {
         return this.customFetch("/users/login", {
             method: "POST",
-            body: JSON.stringify({email, password})
-        })
+            body: JSON.stringify({ email, password }),
+        });
     }
 
     async getMe() {
-        return this.customFetch("/users/me")
+        return this.customFetch("/users/me");
     }
 
     async logout() {
@@ -82,6 +80,5 @@ class ApiClient {
     }
 }
 
-
 const apiClient = new ApiClient();
-export default apiClient
+export default apiClient;

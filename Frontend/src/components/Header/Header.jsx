@@ -5,7 +5,8 @@ import UserDropdown from "./UserDropdown.jsx";
 
 const Header = () => {
     const { isAuthenticated, user } = useSelector((state) => state.auth);
-    console.log("USER: ", user)
+
+    console.log("USER: ", user);
     return (
         <nav className="w-full bg-blue-100 border-b shadow-sm sticky top-0 z-50">
             <div className="max-w-7xl mx-auto px-4 py-7 flex items-center justify-between">

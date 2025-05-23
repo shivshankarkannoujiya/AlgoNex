@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import SignoutBtn from "../Auth/SignOutButton";
 
 const UserDropdown = ({ user }) => {
-    console.log(user?.role)
+    console.log(user?.role);
     const [open, setOpen] = useState(false);
     const ref = useRef();
 
@@ -58,7 +58,7 @@ const UserDropdown = ({ user }) => {
                     >
                         Favourite List
                     </Link>
-                    {user.data.role === "ADMIN" && (
+                    {user?.role === "ADMIN" && (
                         <Link
                             to="/create-problem"
                             onClick={() => setOpen(false)}
