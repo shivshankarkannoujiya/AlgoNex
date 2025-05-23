@@ -19,6 +19,11 @@ import Footer from "./Footer/Footer";
 import FavoritesPanel from "./Problem/FavouritePanel";
 import QuestionListPanel from "./Problem/QuestionListPanel";
 
+/**@description Home Components */
+import HeroSection from "./Home/HeroSection";
+import Preloader from "./Common/Preloader";
+
+
 export {
     Button,
     Input,
@@ -31,4 +36,6 @@ export {
     AuthLayout,
     FavoritesPanel,
     QuestionListPanel,
+    HeroSection,
+    Preloader
 };

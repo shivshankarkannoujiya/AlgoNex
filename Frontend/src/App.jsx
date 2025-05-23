@@ -4,7 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getCurrentUser } from "./features/auth/authThunks";
 import { Outlet } from "react-router-dom";
-import { Header } from "./components/index.js";
+import { Footer, Header, Preloader } from "./components/index.js";
 
 const App = () => {
     const dispatch = useDispatch();
@@ -15,11 +15,7 @@ const App = () => {
     }, [dispatch]);
 
     if (loading) {
-        return (
-            <div className="h-screen flex items-center justify-center text-2xl">
-                Loading...
-            </div>
-        );
+        return <Preloader />;
     }
 
     return (
@@ -27,6 +23,7 @@ const App = () => {
             <ToastContainer position="top-center" autoClose={3000} />
             <Header />
             <Outlet />
+            <Footer />
         </>
     );
 };

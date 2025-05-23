@@ -1,0 +1,50 @@
+/* ===============================
+   🎨 Color & Typography Tokens
+   =============================== */
+:root {
+  /* Backgrounds */
+  --color-bg-main: #000814;       /* Main dark background */
+  --color-surface: #0A1128;       /* Surface or card background */
+
+  /* Text Colors */
+  --color-text-primary: #F8F9FA;
+  --color-text-secondary: #ADB5BD;
+  --color-disabled: #495057;
+
+  /* Core UI Colors */
+  --color-primary: #1E90FF;       /* Buttons, highlights */
+  --color-secondary: #7F5AF0;     /* Tabs, accents */
+  --color-accent: #00FFD1;        /* Neon effects, links */
+
+  /* Semantic Colors */
+  --color-success: #2ECC71;
+  --color-warning: #FFC300;
+  --color-error:   #FF4C4C;
+  --color-info:    #17A2B8;
+
+  /* Border & Elevation */
+  --color-border: #1C1C2E;
+
+  /* Fonts */
+  --font-base: 'Inter', system-ui, sans-serif;
+  --font-xs: 12px;
+  --font-sm: 14px;
+  --font-md: 16px;
+  --font-lg: 20px;
+  --font-xl: 28px;
+  --font-xxl: 36px;
+}
+
+/* ===============================
+   🧱 Base Typography Reset
+   =============================== */
+body {
+  background-color: var(--color-bg-main);
+  color: var(--color-text-primary);
+  font-family: var(--font-base);
+  font-size: var(--font-md);
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}

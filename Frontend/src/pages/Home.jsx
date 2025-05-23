@@ -1,9 +1,10 @@
-import React from 'react'
-
+import { HeroSection } from "../components";
 const Home = () => {
-  return (
-    <div>Home</div>
-  )
-}
+    return (
+        <div className="min-h-screen pt-1 flex flex-col bg-[#000814] home-gradient">
+            <HeroSection />
+        </div>
+    );
+};
 
-export default Home
+export default Home;
