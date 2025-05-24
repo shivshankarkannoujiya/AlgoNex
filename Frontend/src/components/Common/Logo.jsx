@@ -6,9 +6,13 @@ import { Link } from "react-router-dom";
 //   )
 // }
 
-const Logo = () => {
+const Logo = ({ textColor = "text-white", className = "", ...props }) => {
     return (
-        <Link to="/" className="text-xl font-bold text-blue-600">
+        <Link
+            to="/"
+            className={`text-xl font-bold ${textColor} ${className}`}
+            {...props}
+        >
             AlgoNex
         </Link>
     );

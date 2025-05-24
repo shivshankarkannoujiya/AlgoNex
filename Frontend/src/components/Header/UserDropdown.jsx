@@ -36,34 +36,40 @@ const UserDropdown = ({ user }) => {
                     }
                     loading="lazy"
                     alt="avatar"
-                    className="w-10 h-10 p-1 rounded-full border-2 border-gray-950"
+                    className="w-10 h-10 p-1 rounded-full border-2 border-gray-400"
                 />
             </button>
 
             {open && (
-                <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg border rounded-md z-50 p-2 space-y-2">
+                <div className="absolute right-0 mt-2 w-48 bg-[#000814] shadow-lg border rounded-md z-50 p-2 space-y-2 text-white">
                     <Link
                         to="/profile"
-                        className="block px-4 py-2 text-sm hover:bg-gray-100 rounded-md"
+                        className="block px-4 py-2 text-sm bg-[#000814] rounded-md   hover:bg-[#1a2432]"
                     >
                         Profile
                     </Link>
                     <Link
+                        to="/dashboard"
+                        className="block px-4 py-2 text-sm bg-[#000814] rounded-md   hover:bg-[#1a2432]"
+                    >
+                        Dashboard
+                    </Link>
+                    <Link
                         to="/submissions"
-                        className="block px-4 py-2 text-sm hover:bg-gray-100 rounded-md"
+                        className="block px-4 py-2 text-sm bg-[#000814] rounded-md  hover:bg-[#1a2432]"
                     >
                         My Submissions
                     </Link>
                     <Link
                         to="/mylist"
-                        className="block px-4 py-2 text-sm hover:bg-gray-100 rounded-md"
+                        className="block px-4 py-2 text-sm bg-[#000814] rounded-md  hover:bg-[#1a2432]"
                     >
                         Favourite List
                     </Link>
                     {user?.role === "ADMIN" && (
                         <Link
                             to="/create-problem"
-                            className="block px-4 py-2 text-sm hover:bg-gray-100 rounded-md"
+                            className="block px-4 py-2 text-sm bg-[#000814] rounded-md  hover:bg-[#1a2432]"
                         >
                             Add Problem
                         </Link>

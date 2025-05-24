@@ -15,7 +15,7 @@ const Preloader = () => {
             className="fixed inset-0 z-50 flex items-center justify-center bg-[#000814] overflow-hidden"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.3 }}
         >
             {particles.map(({ id, size, top, left, delay }) => (
                 <motion.div

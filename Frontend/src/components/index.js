@@ -22,6 +22,9 @@ import QuestionListPanel from "./Problem/QuestionListPanel";
 /**@description Home Components */
 import HeroSection from "./Home/HeroSection";
 import Preloader from "./Common/Preloader";
+import KeyFeatures from "./Home/KeyFeatures";
+import AnimatedDivider from "./Home/AnimatedDivider ";
+
 
 
 export {
@@ -37,5 +40,7 @@ export {
     FavoritesPanel,
     QuestionListPanel,
     HeroSection,
-    Preloader
+    Preloader,
+    KeyFeatures,
+    AnimatedDivider
 };

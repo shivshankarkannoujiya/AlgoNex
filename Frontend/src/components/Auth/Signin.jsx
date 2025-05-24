@@ -27,7 +27,7 @@ const Signin = () => {
             const response = await dispatch(loginUser(data));
             if (loginUser.fulfilled.match(response)) {
                 toast.success("Signed in successfully!");
-                navigate("/");
+                navigate("/dashboard");
             } else {
                 setError(response.payload?.message ?? "Invalid credentials");
                 toast.error("Sign in failed");
@@ -42,8 +42,8 @@ const Signin = () => {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-black text-white px-4">
-            <div className="w-full max-w-md bg-neutral-900 rounded-xl p-10 border border-white/10 shadow-2xl">
+        <div className="flex items-center justify-center h-screen  bg-[#000814] home-gradient text-white px-4">
+            <div className="w-full max-w-md bg-[#0F172A] rounded-xl p-10 border border-gray-600 shadow-2xl ">
                 <div className="mb-5 text-center">
                     <Logo className="mx-auto w-12 h-12 mb-2" />
                     <h2 className="text-2xl font-bold">Welcome back</h2>
@@ -97,6 +97,7 @@ const Signin = () => {
                     </div>
 
                     <Button
+                        disabled={loading}
                         type="submit"
                         className="w-full mt-5"
                     >

@@ -11,7 +11,7 @@ const HeroSection = () => {
     };
 
     return (
-        <section className="flex flex-col items-center justify-center text-center py-20 px-4">
+        <section className="flex flex-col items-center justify-center text-center py-20 px-4 mb-10">
             <Link to="/signup">
                 <div className="flex items-center space-x-2 mb-8 px-4 py-2 bg-[#161D29] bg-opacity-30 rounded-full text-[#999DAA] text-sm cursor-pointer shadow-2xl transition-all duration-200 hover:scale-95">
                     <span className="relative inline-flex h-2 w-2">

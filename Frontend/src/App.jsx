@@ -1,20 +1,24 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { getCurrentUser } from "./features/auth/authThunks";
 import { Outlet } from "react-router-dom";
 import { Footer, Header, Preloader } from "./components/index.js";
 
 const App = () => {
     const dispatch = useDispatch();
-    const { loading } = useSelector((state) => state.auth);
+    const [loader, setLoader] = useState(true);
 
     useEffect(() => {
-        dispatch(getCurrentUser());
+        const fetchUser = async () => {
+            await dispatch(getCurrentUser());
+            setLoader(false);
+        };
+        fetchUser();
     }, [dispatch]);
 
-    if (loading) {
+    if (loader) {
         return <Preloader />;
     }
 

@@ -5,13 +5,13 @@ const AuthButtons = () => {
         <div className="flex gap-3">
             <Link
                 to="/login"
-                className="text-sm px-4 py-2 rounded-md border hover:bg-blue-50 transition "
+                className="text-md text-white px-6 py-3 rounded-md border"
             >
                 Log In
             </Link>
             <Link
                 to="/signup"
-                className="text-sm px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition"
+                className="text-md px-6 py-3 rounded-md bg-teal-600 text-white hover:bg-teal-700 transition-all duration-300"
             >
                 Sign Up
             </Link>
