@@ -115,7 +115,11 @@ const Signup = () => {
                         )}
                     </div>
 
-                    <Button type="submit" className="w-full mt-5">
+                    <Button
+                        disabled={loading}
+                        type="submit"
+                        className="w-full mt-5"
+                    >
                         {loading ? "Signing Up..." : "Sign Up"}
                     </Button>
                 </form>
