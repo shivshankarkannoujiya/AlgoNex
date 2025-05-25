@@ -12,6 +12,7 @@ const initialState = {
     isAuthenticated: false,
     loading: false,
     error: null,
+    emailVerified: false
 };
 
 const authSlice = createSlice({
@@ -23,6 +24,7 @@ const authSlice = createSlice({
             state.isAuthenticated = false;
             state.loading = false;
             state.error = null;
+            emailVerified: false
             localStorage.removeItem("isLoggedIn");
         },
     },
@@ -34,7 +36,7 @@ const authSlice = createSlice({
 
         const handleRejected = (state, action) => {
             state.loading = false;
-            state.error = action.payload;
+            state.error = action.error.message;
         };
 
         builder
@@ -44,11 +46,11 @@ const authSlice = createSlice({
                 state.user = action.payload;
                 state.isAuthenticated = !!action.payload;
             })
-            .addCase(getCurrentUser.rejected, (state) => {
+            .addCase(getCurrentUser.rejected, (state, action) => {
                 state.user = null;
                 state.loading = false;
                 state.isAuthenticated = false;
-                state.error = "Session expired. Please login again.";
+                state.error = action.error.message;
             })
 
             .addCase(signupUser.pending, handlePending)
@@ -81,6 +83,7 @@ const authSlice = createSlice({
             .addCase(verifyEmail.fulfilled, (state) => {
                 state.error = null;
                 state.loading = false;
+                state.emailVerified = true
             })
             .addCase(verifyEmail.rejected, handleRejected);
     },

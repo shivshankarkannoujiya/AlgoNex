@@ -54,12 +54,12 @@ const logoutUser = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
 
 const verifyEmail = createAsyncThunk(
     "auth/verifyEmail",
-    async (token, { rejectWithValue }) => {
+    async (token, thunkAPI) => {
         try {
             const response = await apiClient.verifyEmail(token);
             return response?.data;
         } catch (error) {
-            return rejectWithValue(error.message || "Verification failed");
+            return thunkAPI.rejectWithValue(error.message || "Verification failed");
         }
     },
 );
