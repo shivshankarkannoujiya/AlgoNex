@@ -78,6 +78,13 @@ class ApiClient {
             method: "POST",
         });
     }
+
+    async createProblem(problemData) {
+        return this.customFetch("/problems/create-problem", {
+            method: "POST",
+            body: JSON.stringify(problemData)
+        });
+    }
 }
 
 const apiClient = new ApiClient();

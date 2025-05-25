@@ -16,6 +16,8 @@ import Profile from "./pages/Profile.jsx";
 import Submission from "./pages/Submission.jsx";
 import MyList from "./pages/MyList.jsx";
 import CreateProblem from "./pages/CreateProblem.jsx";
+import AddProblem from "./pages/AddProblem.jsx";
+
 
 const router = createBrowserRouter([
     {
@@ -104,7 +106,7 @@ const router = createBrowserRouter([
                 path: "create-problem",
                 element: (
                     <AuthLayout authentication={true}>
-                        <CreateProblem />
+                        <AddProblem />
                     </AuthLayout>
                 ),
             },

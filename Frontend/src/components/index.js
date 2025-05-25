@@ -18,6 +18,7 @@ import Footer from "./Footer/Footer";
 /**@description Problem Components */
 import FavoritesPanel from "./Problem/FavouritePanel";
 import QuestionListPanel from "./Problem/QuestionListPanel";
+import CreateProblemForm from "./Problem/CreateProblemForm";
 
 /**@description Home Components */
 import HeroSection from "./Home/HeroSection";
@@ -42,5 +43,6 @@ export {
     HeroSection,
     Preloader,
     KeyFeatures,
-    AnimatedDivider
+    AnimatedDivider,
+    CreateProblemForm
 };

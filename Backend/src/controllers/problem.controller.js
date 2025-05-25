@@ -27,6 +27,7 @@ const createProblem = asyncHandler(async (req, res) => {
     }
 
     try {
+        const allLanguagesPassed = [];
         for (const [language, solutionCode] of Object.entries(
             referenceSolution,
         )) {
@@ -66,31 +67,32 @@ const createProblem = asyncHandler(async (req, res) => {
                 }
             }
 
-            const newProblem = await prisma.problem.create({
-                data: {
-                    title,
-                    description,
-                    difficulty,
-                    tags,
-                    example,
-                    constraints,
-                    testcases,
-                    codeSnippets,
-                    referenceSolution,
-                    userId: req.user?.id,
-                },
-            });
-
-            return res
-                .status(201)
-                .json(
-                    new ApiResponse(
-                        201,
-                        { problem: newProblem },
-                        "Problem created successfully",
-                    ),
-                );
+            allLanguagesPassed.push(language);
         }
+        const newProblem = await prisma.problem.create({
+            data: {
+                title,
+                description,
+                difficulty,
+                tags,
+                example,
+                constraints,
+                testcases,
+                codeSnippets,
+                referenceSolution,
+                userId: req.user?.id,
+            },
+        });
+
+        return res
+            .status(201)
+            .json(
+                new ApiResponse(
+                    201,
+                    { problem: newProblem },
+                    "Problem created successfully",
+                ),
+            );
     } catch (error) {
         console.log("Error while creating problem: ", error);
         throw new ApiError(500, "Something went wrong while creating problem");
