@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Editor from "@monaco-editor/react";
 import { useSelector, useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 import { getProblemById } from "../features/problem/problemThunks";
 import {
   Play,
@@ -20,11 +21,15 @@ import {
   Home,
   CloudUploadIcon,
 } from "lucide-react";
+import { executeCode } from "../features/execution/executionThunks";
+import { getJudge0LanguageId } from "../Service/lang.js";
+import { SubmissionResults } from "../components/index.js";
 
 const Problem = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { isProblemLoading, problem } = useSelector((state) => state.problems);
+  const { submission, isExecuting } = useSelector((state) => state.execution);
 
   const [code, setCode] = useState("");
   const [activeTab, setActiveTab] = useState("description");
@@ -40,7 +45,7 @@ const Problem = () => {
 
   useEffect(() => {
     if (problem) {
-      setCode(problem.codeSnippets?.[selectedLanguage] || "");
+      setCode(problem.codeSnippets?.[selectedLanguage.toUpperCase()] || "");
       setTestCases(
         problem?.testcases.map((tc) => ({
           input: tc.input,
@@ -54,11 +59,36 @@ const Problem = () => {
   const handleLanguageChange = (e) => {
     const language = e.target.value;
     setSelectedLanguage(language);
-    setCode(problem.codeSnippets?.[language] || "");
+    setCode(problem.codeSnippets?.[language.toUpperCase()] || "");
   };
 
   let submissionCount = 12;
-  const submission = false;
+
+  const handleRunCode = async (e) => {
+    e.preventDefault();
+    try {
+      const language_id = getJudge0LanguageId(selectedLanguage);
+      const stdin = problem.testcases?.map((tc) => tc?.input);
+      const expected_outputs = problem.testcases?.map((tc) => tc?.output);
+
+      await dispatch(
+        executeCode({
+          source_code: code,
+          language_id,
+          stdin,
+          expected_outputs,
+          problemId: id,
+        }),
+      );
+
+      toast.success("Executed Successfully!");
+    } catch (error) {
+      console.log("Error Executing Code: ", error);
+      toast.error("Error Executing Code");
+    }
+  };
+
+  console.log("Submission: ", submission);
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -131,7 +161,7 @@ const Problem = () => {
           <div className="p-4 text-center text-gray-600">
             {" "}
             {/* Replaced text-base-content/70 */}
-            No discussions yet
+            No Submissions yet
           </div>
         );
       case "discussion":
@@ -168,7 +198,7 @@ const Problem = () => {
 
   return (
     <div className="min-h-screen  px-4 bg-[#000814] home-gradient text-white">
-      <nav className="flex items-center justify-between bg-[#0A1128] shadow-lg px-4 py-3 text-white">
+      <nav className="flex items-center justify-between bg-[#000814] shadow-lg px-4 py-3 text-white">
         <div className="flex items-center gap-2">
           <Link
             to={"/dashboard"}
@@ -211,13 +241,13 @@ const Problem = () => {
             <Share2 className="w-5 h-5" />
           </button>
           <select
-            className="block w-40 px-3 py-2 border border-black bg-gray-950 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            className="block w-40 px-3 py-2 border border-gray-500 bg-gray-950 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             value={selectedLanguage}
             onChange={handleLanguageChange}
           >
             {Object.keys(problem?.codeSnippets || {}).map((lang) => (
-              <option key={lang} value={lang}>
-                {lang.charAt(0).toUpperCase() + lang.slice(1)}
+              <option key={lang} value={lang.toLowerCase()}>
+                {lang.charAt(0) + lang.slice(1).toLowerCase()}
               </option>
             ))}
           </select>
@@ -228,14 +258,11 @@ const Problem = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="bg-gray-950 rounded-xl shadow-xl overflow-hidden">
             {" "}
-            {/* Replaced card, bg-base-100, shadow-xl */}
             <div className="p-0">
               {" "}
-              {/* Replaced card-body p-0 */}
-              {/* Tabs */}
+
               <div className="flex border-b border-gray-200 ">
                 {" "}
-                {/* Replaced tabs tabs-bordered */}
                 <button
                   className={`flex-1 py-3 px-4 text-center text-gray-100 font-medium border-b-2 border-transparent hover:border-blue-500 hover:text-blue-500 transition-colors duration-200 ${
                     activeTab === "description"
@@ -340,9 +367,13 @@ const Problem = () => {
               </div>
               <div className="p-4 border-t-2 border-white">
                 <div className="flex items-center justify-between">
-                  <button className="px-4 py-3  flex items-center justify-center gap-2 border rounded-md font-semibold cursor-pointer">
+                  <button
+                    onClick={handleRunCode}
+                    disabled={isExecuting}
+                    className="px-4 py-3  flex items-center justify-center gap-2 border rounded-md font-semibold cursor-pointer"
+                  >
                     <Play className="w-4 h-4 " />
-                    Run Code
+                    {isExecuting ? "Running..." : "Run Code"}
                   </button>
                   <button className="px-4 py-3 flex items-center justify-center gap-2 border rounded-md text-teal-500 font-semibold cursor-pointer">
                     <CloudUploadIcon className="w-4 h-4 text-teal-500" />
@@ -358,7 +389,7 @@ const Problem = () => {
       <div className="bg-gray-950 rounded-xl shadow-xl mt-6">
         <div className="p-6">
           {submission ? (
-            <h1 className="text-xl font-bold text-gray-100">Submission Data</h1>
+            <SubmissionResults submission={submission} />
           ) : (
             <>
               <div className="flex items-center justify-between mb-6">

@@ -1,129 +1,143 @@
 class ApiClient {
-    constructor() {
-        this.baseUrl = "http://localhost:3000/api/v1";
-        this.defaultHeaders = {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-        };
-    }
+  constructor() {
+    this.baseUrl = "http://localhost:3000/api/v1";
+    this.defaultHeaders = {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    };
+  }
 
-    async customFetch(endpoint, options = {}, retry = true) {
-        try {
-            const url = `${this.baseUrl}${endpoint}`;
-            const headers = { ...this.defaultHeaders, ...options?.headers };
+  async customFetch(endpoint, options = {}, retry = true) {
+    try {
+      const url = `${this.baseUrl}${endpoint}`;
+      const headers = { ...this.defaultHeaders, ...options?.headers };
 
-            const config = {
-                ...options,
-                headers,
-                credentials: "include",
-            };
+      const config = {
+        ...options,
+        headers,
+        credentials: "include",
+      };
 
-            const response = await fetch(url, config);
+      const response = await fetch(url, config);
 
-            // Handle expired token
-            if (response.status === 401 && retry) {
-                const refreshResponse = await fetch(
-                    `${this.baseUrl}/users/refresh-token`,
-                    {
-                        method: "POST",
-                        credentials: "include",
-                    },
-                );
+      // Handle expired token
+      if (response.status === 401 && retry) {
+        const refreshResponse = await fetch(
+          `${this.baseUrl}/users/refresh-token`,
+          {
+            method: "POST",
+            credentials: "include",
+          },
+        );
 
-                if (refreshResponse.ok) {
-                    return this.customFetch(endpoint, options, false);
-                } else {
-                    throw new Error("Session expired. Please log in again.");
-                }
-            }
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            return data;
-        } catch (error) {
-            console.error("API ERROR: ", error.message);
-            throw error;
+        if (refreshResponse.ok) {
+          return this.customFetch(endpoint, options, false);
+        } else {
+          throw new Error("Session expired. Please log in again.");
         }
-    }
+      }
 
-    async signup(username, email, password) {
-        return this.customFetch("/users/signup", {
-            method: "POST",
-            body: JSON.stringify({ username, email, password }),
-        });
-    }
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
-    async verifyEmail(token) {
-        return this.customFetch(`/users/verify/${token}`, {
-            method: "GET",
-        });
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("API ERROR: ", error.message);
+      throw error;
     }
+  }
 
-    async login(email, password) {
-        return this.customFetch("/users/login", {
-            method: "POST",
-            body: JSON.stringify({ email, password }),
-        });
-    }
+  async signup(username, email, password) {
+    return this.customFetch("/users/signup", {
+      method: "POST",
+      body: JSON.stringify({ username, email, password }),
+    });
+  }
 
-    async getMe() {
-        return this.customFetch("/users/me");
-    }
+  async verifyEmail(token) {
+    return this.customFetch(`/users/verify/${token}`, {
+      method: "GET",
+    });
+  }
 
-    async logout() {
-        return this.customFetch("/users/logout", {
-            method: "POST",
-        });
-    }
+  async login(email, password) {
+    return this.customFetch("/users/login", {
+      method: "POST",
+      body: JSON.stringify({ email, password }),
+    });
+  }
 
-    async createProblem(problemData) {
-        return this.customFetch("/problems/create-problem", {
-            method: "POST",
-            body: JSON.stringify(problemData),
-        });
-    }
+  async getMe() {
+    return this.customFetch("/users/me");
+  }
 
-    async getAllProblems() {
-        return this.customFetch("/problems/get-all-problems", {
-            method: "GET",
-        });
-    }
+  async logout() {
+    return this.customFetch("/users/logout", {
+      method: "POST",
+    });
+  }
 
-    async getProblemById(id) {
-        return this.customFetch(`/problems/get-problem/${id}`, {
-            method: "GET",
-        });
-    }
+  async createProblem(problemData) {
+    return this.customFetch("/problems/create-problem", {
+      method: "POST",
+      body: JSON.stringify(problemData),
+    });
+  }
 
-    async getSolvedProblem() {
-        return this.customFetch("/problems/get-solved-problem", {
-            method: "GET",
-        });
-    }
+  async getAllProblems() {
+    return this.customFetch("/problems/get-all-problems", {
+      method: "GET",
+    });
+  }
 
-    async updateProblem(id, problemData) {
-        return this.customFetch(`/problems/update-problem${id}`, {
-            method: "PUT",
-            body: JSON.stringify(problemData),
-        });
-    }
+  async getProblemById(id) {
+    return this.customFetch(`/problems/get-problem/${id}`, {
+      method: "GET",
+    });
+  }
 
-    async deleteProblem(id) {
-        return this.customFetch(`/problems/delete-problem/${id}`, {
-            method: "DELETE",
-        });
-    }
+  async getSolvedProblem() {
+    return this.customFetch("/problems/get-solved-problem", {
+      method: "GET",
+    });
+  }
 
-    async executeCode(codeExecutionData) {
-        return this.customFetch("/code/execute", {
-            method: "POST",
-            body: JSON.stringify(codeExecutionData)
-        })
-    }
+  async updateProblem(id, problemData) {
+    return this.customFetch(`/problems/update-problem${id}`, {
+      method: "PUT",
+      body: JSON.stringify(problemData),
+    });
+  }
 
+  async deleteProblem(id) {
+    return this.customFetch(`/problems/delete-problem/${id}`, {
+      method: "DELETE",
+    });
+  }
+
+  async executeCode({
+    source_code,
+    language_id,
+    stdin,
+    expected_outputs,
+    problemId,
+  }) {
+    return this.customFetch("/code/execute", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        source_code,
+        language_id,
+        stdin,
+        expected_outputs,
+        problemId,
+      }),
+    });
+  }
 }
 
 const apiClient = new ApiClient();

@@ -16,7 +16,7 @@ const executionSlice = createSlice({
         resetExecution: (state) => {
             state.submission = null
             state.error = null
-            state.isExecuting = null
+            state.isExecuting = false
         }
     },
     extraReducers: (builder) => {
@@ -26,13 +26,13 @@ const executionSlice = createSlice({
                 state.isExecuting = true
             })
             .addCase(executeCode.fulfilled, (state, action) => {
-                state.error = null
-                state.isExecuting = false
                 state.submission = action.payload
+                state.isExecuting = false
+                state.error = null
             })
             .addCase(executeCode.rejected, (state, action) => {
                 state.isExecuting = false
-                state.error = action.payload.error
+                state.error = action.payload
             })
     }
 });
