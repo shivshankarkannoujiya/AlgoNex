@@ -116,6 +116,14 @@ class ApiClient {
             method: "DELETE",
         });
     }
+
+    async executeCode(codeExecutionData) {
+        return this.customFetch("/code/execute", {
+            method: "POST",
+            body: JSON.stringify(codeExecutionData)
+        })
+    }
+
 }
 
 const apiClient = new ApiClient();
