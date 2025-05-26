@@ -2,7 +2,7 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
 import { Provider } from "react-redux";
-import store from "./store/store.js";
+import store from "./Store/store.js";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { AuthLayout, Signin } from "./components/index.js";
 
@@ -15,9 +15,7 @@ import Problem from "./pages/Problem.jsx";
 import Profile from "./pages/Profile.jsx";
 import Submission from "./pages/Submission.jsx";
 import MyList from "./pages/MyList.jsx";
-import CreateProblem from "./pages/CreateProblem.jsx";
 import AddProblem from "./pages/AddProblem.jsx";
-
 
 const router = createBrowserRouter([
     {
@@ -62,7 +60,7 @@ const router = createBrowserRouter([
             },
 
             {
-                path: "problems/:id",
+                path: "problem/:id",
                 element: (
                     <AuthLayout authentication={true}>
                         <Problem />
@@ -95,7 +93,7 @@ const router = createBrowserRouter([
                 ),
             },
             {
-                path: "/mylist",
+                path: "mylist",
                 element: (
                     <AuthLayout authentication={true}>
                         <MyList />

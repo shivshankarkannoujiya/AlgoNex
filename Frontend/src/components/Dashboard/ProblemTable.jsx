@@ -1,7 +1,6 @@
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
 import { Bookmark, PencilIcon, TrashIcon, Plus } from "lucide-react";
 
 const ProblemTable = ({ problems }) => {
