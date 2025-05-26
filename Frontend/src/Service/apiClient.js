@@ -87,32 +87,32 @@ class ApiClient {
     }
 
     async getAllProblems() {
-        return this.customFetch("/get-all-problems", {
+        return this.customFetch("/problems/get-all-problems", {
             method: "GET",
         });
     }
 
     async getProblemById(id) {
-        return this.customFetch(`/get-problem/${id}`, {
+        return this.customFetch(`/problems/get-problem/${id}`, {
             method: "GET",
         });
     }
 
     async getSolvedProblem() {
-        return this.customFetch("/get-solved-problem", {
+        return this.customFetch("/problems/get-solved-problem", {
             method: "GET",
         });
     }
 
     async updateProblem(id, problemData) {
-        return this.customFetch(`/update-problem${id}`, {
+        return this.customFetch(`/problems/update-problem${id}`, {
             method: "PUT",
             body: JSON.stringify(problemData),
         });
     }
 
     async deleteProblem(id) {
-        return this.customFetch(`/delete-problem/${id}`, {
+        return this.customFetch(`/problems/delete-problem/${id}`, {
             method: "DELETE",
         });
     }

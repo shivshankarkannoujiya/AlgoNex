@@ -99,8 +99,18 @@ const createProblem = asyncHandler(async (req, res) => {
     }
 });
 
-const getAllProblems = asyncHandler(async (_, res) => {
-    const problems = await prisma.problem.findMany();
+const getAllProblems = asyncHandler(async (req, res) => {
+    const problems = await prisma.problem.findMany(
+        {
+            include: {
+                ProblemSolvedBy: {
+                    where: {
+                        userId: req.user?.id
+                    }
+                }
+            }
+        }
+    );
     if (!problems) {
         throw new ApiError(404, "No problems found !");
     }
