@@ -146,11 +146,15 @@ class ApiClient {
   }
 
   async getSubmissionForProblem(id) {
-    return this.customFetch(`/submission/getSubmission/${id}`);
+    return this.customFetch(`/submission/getSubmission/${id}`, {
+      method: "GET"
+    });
   }
 
   async getSubmissionCountForProblem(id) {
-    return this.customFetch(`/submission/getSubmissionCount/${id}`);
+    return this.customFetch(`/submission/getSubmissionCount/${id}`, {
+      method: "GET"
+    });
   }
 }
 

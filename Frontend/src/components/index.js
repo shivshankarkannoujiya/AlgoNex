@@ -21,6 +21,8 @@ import QuestionListPanel from "./Problem/QuestionListPanel";
 import CreateProblemForm from "./Problem/CreateProblemForm";
 import ProblemTable from "./Dashboard/ProblemTable";
 import SubmissionResults from "../components/Problem/Submission"
+import SubmissionList from "./Problem/SubmissionList";
+
 
 /**@description Home Components */
 import HeroSection from "./Home/HeroSection";
@@ -48,5 +50,6 @@ export {
     AnimatedDivider,
     CreateProblemForm,
     ProblemTable,
-    SubmissionResults
+    SubmissionResults,
+    SubmissionList
 };

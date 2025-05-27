@@ -23,13 +23,24 @@ import {
 } from "lucide-react";
 import { executeCode } from "../features/execution/executionThunks";
 import { getJudge0LanguageId } from "../Service/lang.js";
-import { SubmissionResults } from "../components/index.js";
+import { SubmissionResults, SubmissionList } from "../components/index.js";
+import {
+  getAllSubmissions,
+  getSubmissionCountForProblem,
+  getSubmissionForProblem,
+} from "../features/submission/submissionThunks.js";
 
 const Problem = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { isProblemLoading, problem } = useSelector((state) => state.problems);
   const { submission, isExecuting } = useSelector((state) => state.execution);
+  const {
+    submissionCount,
+    submission: submissionForProblem,
+    submissions,
+    isLoading: isSubmissionLoading,
+  } = useSelector((state) => state.submission);
 
   const [code, setCode] = useState("");
   const [activeTab, setActiveTab] = useState("description");
@@ -43,9 +54,28 @@ const Problem = () => {
 
   useEffect(() => {
     dispatch(getProblemById(id));
+    dispatch(getSubmissionCountForProblem(id));
+    dispatch(getSubmissionForProblem(id));
   }, [id, dispatch]);
 
+  const successfulSubmissions =
+    submissionForProblem?.filter((s) => s?.status.toLowerCase() === "accepted")
+      ?.length || 0;
+  const totalSubmissions = submissionForProblem?.length || 0;
+  const successRate =
+    totalSubmissions > 0
+      ? Math.round((successfulSubmissions / totalSubmissions) * 100)
+      : 0;
+
+  useEffect(() => {
+    if (activeTab === "submission") {
+      dispatch(getSubmissionForProblem());
+    }
+  }, [dispatch]);
+
+  console.log("Submission: ", submissionForProblem);
   console.log(problem);
+  console.log("submissionForProblem: ", submissionForProblem);
 
   useEffect(() => {
     if (problem) {
@@ -66,7 +96,6 @@ const Problem = () => {
     setCode(problem.codeSnippets?.[language.toUpperCase()] || "");
   };
 
-  let submissionCount = 12;
   const handleAddCustomTestCase = () => {
     setCustomTestCases((prev) => [...prev, { input: "", output: "" }]);
     setActiveTestIndex(customTestCases.length);
@@ -85,13 +114,10 @@ const Problem = () => {
     setCustomTestCases(updated);
   };
 
-  console.log("Submission: ", submission);
-
   const handleRunCode = async (e) => {
     e.preventDefault();
     try {
       const language_id = getJudge0LanguageId(selectedLanguage);
-
       const useCustom = customTestCases.some((tc) => tc.input.trim() !== "");
 
       const stdin = useCustom
@@ -131,7 +157,7 @@ const Problem = () => {
                 <h3 className="text-xl text-teal-500 font-bold mb-4">
                   Examples
                 </h3>
-                {Object.entries(problem.example).map(([lang, example], idx) => (
+                {Object.entries(problem.example).map(([lang, example]) => (
                   <div
                     key={lang}
                     className="bg-[#0B1120] p-6 rounded-xl mb-6 font-mono text-white"
@@ -189,15 +215,16 @@ const Problem = () => {
         return (
           <div className="p-4 text-center text-gray-600">
             {" "}
-            {/* Replaced text-base-content/70 */}
-            No Submissions yet
+            <SubmissionList
+              submissionForProblem={submissionForProblem}
+              isSubmissionLoading={isSubmissionLoading}
+            />
           </div>
         );
       case "discussion":
         return (
           <div className="p-4 text-center text-gray-600">
             {" "}
-            {/* Replaced text-base-content/70 */}
             No discussions yet
           </div>
         );
@@ -214,7 +241,6 @@ const Problem = () => {
             ) : (
               <div className="text-center text-gray-600">
                 {" "}
-                {/* Replaced text-base-content/70 */}
                 No hints available
               </div>
             )}
@@ -253,7 +279,7 @@ const Problem = () => {
               <span>{submissionCount} Submissions</span>
               <span className="text-gray-400">•</span>
               <ThumbsUp className="w-4 h-4" />
-              <span>95% Success Rate</span>
+              <span>{successRate}% Success Rate</span>
             </div>
           </div>
         </div>
@@ -393,8 +419,6 @@ const Problem = () => {
                   }}
                 />
               </div>
-
-              {/* custom Testcases Start */}
               <div className="p-4 border-t border-white">
                 <div className="flex items-center mb-4 space-x-2">
                   {customTestCases.map((_, index) => (
@@ -468,8 +492,6 @@ const Problem = () => {
                   </div>
                 )}
               </div>
-              {/* Custom Testcses End */}
-
               <div className="p-4 border-t-2 border-white">
                 <div className="flex items-center justify-between">
                   <button
@@ -546,7 +568,6 @@ const Problem = () => {
           )}
         </div>
       </div>
-      
     </div>
   );
 };

@@ -79,7 +79,7 @@ const ProblemTable = ({ problems }) => {
         </div>
 
         <select
-          className="bg-gray-800 border border-gray-700 text-white px-4 py-2 rounded-xl w-full"
+          className="bg-gray-800 border border-gray-700 text-white px-4 py-2 rounded-xl w-full "
           value={difficulty}
           onChange={(e) => setDifficulty(e.target.value)}
         >
