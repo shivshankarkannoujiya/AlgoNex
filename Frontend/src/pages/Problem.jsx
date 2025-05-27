@@ -437,7 +437,7 @@ const Problem = () => {
                     </label>
                     <input
                       type="text"
-                      className="w-full p-2 mb-3 rounded bg-black text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                      className="w-full p-2 rounded outline-none text-white border border-gray-600 focus:outline-none focus:ring-1 focus:ring-teal-500 mb-2"
                       value={customTestCases[activeTestIndex].input}
                       onChange={(e) =>
                         handleChangeCustomTestCase(
@@ -450,11 +450,11 @@ const Problem = () => {
                     />
 
                     <label className="block text-sm text-gray-400 mb-1">
-                      Output
+                      Expected Output
                     </label>
                     <input
                       type="text"
-                      className="w-full p-2 rounded outline-none text-white border border-gray-600 focus:outline-none focus:ring-1 focus:ring-teal-500 "
+                      className="w-full p-2 rounded outline-none text-white border border-gray-600 focus:outline-none focus:ring-1 focus:ring-teal-500"
                       value={customTestCases[activeTestIndex].output}
                       onChange={(e) =>
                         handleChangeCustomTestCase(

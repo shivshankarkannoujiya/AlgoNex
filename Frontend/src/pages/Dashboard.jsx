@@ -12,6 +12,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     dispatch(getAllProblems());
+    
   }, [dispatch]);
 
   console.log("problems: ", problems);
