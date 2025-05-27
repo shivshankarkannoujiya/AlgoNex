@@ -20,7 +20,7 @@ class ApiClient {
 
       const response = await fetch(url, config);
 
-      // Handle expired token
+      // Handling expired token
       if (response.status === 401 && retry) {
         const refreshResponse = await fetch(
           `${this.baseUrl}/users/refresh-token`,
@@ -137,6 +137,20 @@ class ApiClient {
         problemId,
       }),
     });
+  }
+
+  async getAllSubmissions() {
+    return this.customFetch("/submission/getAllSubmission", {
+      method: "GET",
+    });
+  }
+
+  async getSubmissionForProblem(id) {
+    return this.customFetch(`/submission/getSubmission/${id}`);
+  }
+
+  async getSubmissionCountForProblem(id) {
+    return this.customFetch(`/submission/getSubmissionCount/${id}`);
   }
 }
 

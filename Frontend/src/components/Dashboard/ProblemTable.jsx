@@ -152,7 +152,7 @@ const ProblemTable = ({ problems }) => {
                       <span
                         className={`text-xs font-bold px-2 py-1 rounded-full ${
                           problem.difficulty === "EASY"
-                            ? "border border-green-600 text-green-600"
+                            ? "border border-teal-600 text-teal-600"
                             : problem.difficulty === "MEDIUM"
                               ? "border border-yellow-500 text-yellow-500 "
                               : "border border-red-600 text-red-600"
@@ -167,13 +167,12 @@ const ProblemTable = ({ problems }) => {
                           <div className="flex gap-2">
                             <button
                               onClick={() => handleDelete(problem.id)}
-                              className="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded-md flex items-center"
+                              className="border-2 border-red-600 text-red-500 px-2 py-2 rounded-md flex items-center cursor-pointer"
                             >
-                              <TrashIcon className="w-5 h-5" />
+                              <TrashIcon className="w-4 h-4" />
                             </button>
                             <button
-                              disabled
-                              className="bg-yellow-400 text-white px-2 py-1 rounded-md opacity-50 cursor-not-allowed flex items-center"
+                              className="bg-gray-400 text-white px-2 py-1 rounded-md opacity-50 cursor-pointer flex items-center"
                             >
                               <PencilIcon className="w-5 h-5" />
                             </button>
@@ -181,10 +180,10 @@ const ProblemTable = ({ problems }) => {
                         )}
                         <button
                           onClick={() => handleAddToPlaylist(problem.id)}
-                          className="border border-gray-500 text-gray-300 hover:bg-gray-700 px-2 py-1 rounded-md flex items-center gap-1"
+                          className="border border-gray-500 text-gray-300 hover:bg-gray-700 px-2 py-1 rounded-md flex items-center gap-1 cursor-pointer"
                         >
                           <Bookmark className="w-4 h-4" />
-                          <span className="hidden sm:inline text-sm">
+                          <span className="hidden sm:inline text-sm ">
                             Save to Playlist
                           </span>
                         </button>
