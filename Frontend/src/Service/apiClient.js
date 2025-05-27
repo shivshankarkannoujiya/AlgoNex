@@ -105,7 +105,7 @@ class ApiClient {
   }
 
   async updateProblem(id, problemData) {
-    return this.customFetch(`/problems/update-problem${id}`, {
+    return this.customFetch(`/problems/update-problem/${id}`, {
       method: "PUT",
       body: JSON.stringify(problemData),
     });
