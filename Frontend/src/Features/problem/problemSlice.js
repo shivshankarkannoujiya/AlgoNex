@@ -79,8 +79,11 @@ const problemSlice = createSlice({
       .addCase(deleteProblem.fulfilled, (state) => {
         state.error = null;
         state.isDeletingProblem = false;
-        state.problem = null;
-        state.problems = state.problems.filter((p) => p.id !== action.meta.arg);
+        const deletedId = action.meta.arg;
+        state.problems = state.problems.filter((p) => p.id !== deletedId);
+        if (state.problem?.id === deletedId) {
+          state.problem = null;
+        }
       })
       .addCase(deleteProblem.rejected, (state, action) => {
         state.isDeletingProblem = false;

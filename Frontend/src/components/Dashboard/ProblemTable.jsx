@@ -1,6 +1,7 @@
-import { useMemo, useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useMemo, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import {
   Bookmark,
   PencilIcon,
@@ -9,13 +10,16 @@ import {
   CheckCircle,
   CircleDashed,
 } from "lucide-react";
+import { deleteProblem } from "../../features/problem/problemThunks";
 
 const ProblemTable = ({ problems }) => {
   const [search, setSearch] = useState("");
   const [difficulty, setDifficulty] = useState("ALL");
   const [selectedTag, setSelectedTag] = useState("ALL");
   const [currentPage, setCurrentPage] = useState(1);
+  const [deletingId, setDeletingId] = useState(null);
 
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   console.log(user);
 
@@ -52,7 +56,21 @@ const ProblemTable = ({ problems }) => {
   }, [filteredProblems, currentPage]);
 
   const handleAddToPlaylist = (id) => {};
-  const handleDelete = (id) => {};
+
+  const handleDelete = async (id) => {
+    const confirmed = window.confirm("Are you sure?");
+    if (!confirmed) return;
+
+    setDeletingId(id);
+    try {
+      await dispatch(deleteProblem(id)).unwrap();
+      toast.success("Deleted successfully");
+    } catch (error) {
+      toast.error(error || "Failed to delete");
+    } finally {
+      setDeletingId(null);
+    }
+  };
 
   return (
     <div className="w-full px-4 py-8 bg-[#000814] home-gradient rounded-2xl shadow-lg">
@@ -167,13 +185,16 @@ const ProblemTable = ({ problems }) => {
                           <div className="flex gap-2">
                             <button
                               onClick={() => handleDelete(problem.id)}
+                              disabled={deletingId === problem.id}
                               className="border-2 border-red-600 text-red-500 px-2 py-2 rounded-md flex items-center cursor-pointer"
                             >
-                              <TrashIcon className="w-4 h-4" />
+                              {deletingId === problem.id ? (
+                                "Deleting..."
+                              ) : (
+                                <TrashIcon className="w-4 h-4" />
+                              )}
                             </button>
-                            <button
-                              className="bg-gray-400 text-white px-2 py-1 rounded-md opacity-50 cursor-pointer flex items-center"
-                            >
+                            <button className="bg-gray-400 text-white px-2 py-1 rounded-md opacity-50 cursor-pointer flex items-center">
                               <PencilIcon className="w-5 h-5" />
                             </button>
                           </div>
