@@ -1,4 +1,5 @@
 import { CheckCircle2, Calendar, XCircle, User } from "lucide-react";
+import React, { useRef } from "react";
 import {
   BarChart,
   Bar,
@@ -9,6 +10,8 @@ import {
 } from "recharts";
 
 const SubmissionDetailModal = ({ submission, onClose }) => {
+
+  const modalContentRef = useRef(null);
   const runtimeData = JSON.parse(submission.time).map((value, i) => ({
     name: i + 1,
     value: parseFloat(value.split(" ")[0]),
@@ -19,9 +22,24 @@ const SubmissionDetailModal = ({ submission, onClose }) => {
     value: parseFloat(value.split(" ")[0]),
   }));
 
+  const handleBackdropClick = (e) => {
+    if (
+      modalContentRef.current &&
+      !modalContentRef.current.contains(e.target)
+    ) {
+      onClose();
+    }
+  };
+
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
-      <div className="bg-[#0B1225] text-white p-6 rounded-lg w-[90%] max-w-3xl shadow-xl relative">
+    <div
+      className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center"
+      onClick={handleBackdropClick}
+    >
+      <div
+        className="bg-[#0B1225] text-white p-6 rounded-lg w-[90%] max-w-3xl shadow-xl relative"
+        ref={modalContentRef}
+      >
         <button className="absolute top-4 right-4 text-white" onClick={onClose}>
           <XCircle className="h-6 w-6" />
         </button>
@@ -44,7 +62,13 @@ const SubmissionDetailModal = ({ submission, onClose }) => {
           </div>
           <div className="flex items-center gap-2">
             <Calendar className="w-4 h-4" />
-            <span>{new Date(submission.createdAt).toLocaleString()}</span>
+            <span>
+              {new Intl.DateTimeFormat("en-US", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              }).format(new Date(submission.createdAt))}
+            </span>
           </div>
         </div>
 
