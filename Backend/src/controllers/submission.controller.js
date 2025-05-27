@@ -43,6 +43,13 @@ const getSubmissionForProblem = asyncHandler(async (req, res) => {
         orderBy: {
             createdAt: "desc",
         },
+        include: {
+            user: {
+                select: {
+                    username: true,
+                },
+            },
+        },
     });
 
     if (!submissions) {
