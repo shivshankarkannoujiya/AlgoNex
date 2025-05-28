@@ -253,6 +253,7 @@ const getCurrentUser = asyncHandler(async (req, res) => {
             username: true,
             email: true,
             role: true,
+            createdAt: true
         },
     });
 

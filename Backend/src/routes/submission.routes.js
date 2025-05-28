@@ -4,6 +4,7 @@ import {
     getAllSubmission,
     getAllSubmissionsForProblem,
     getSubmissionForProblem,
+    getSubmissionHeatmap,
 } from "../controllers/submission.controller.js";
 
 const router = Router();
@@ -15,5 +16,6 @@ router
 router
     .route("/getSubmissionCount/:problemId")
     .get(isLoggedIn, getAllSubmissionsForProblem);
+router.route("/getSubmissionheatmap").get(isLoggedIn, getSubmissionHeatmap);
 
 export default router;
