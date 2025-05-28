@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { deleteProblem } from "../../features/problem/problemThunks";
 import { createPlaylist } from "../../features/playlist/playlistThunks";
-import { CreatePlaylistModel } from "../index";
+import { CreatePlaylistModel, AddToPlaylist } from "../index";
 
 const ProblemTable = ({ problems }) => {
   const [search, setSearch] = useState("");
@@ -22,6 +22,7 @@ const ProblemTable = ({ problems }) => {
   const [deletingId, setDeletingId] = useState(null);
   const [isCreateModelOpen, setIsCreateModelOpen] = useState(false);
   const [isAddToPlaylistModelOpen, setIsAddToPlaylistModelOpen] = useState(false)
+  const [selectedProblemId, SetselectedProblemId] = useState(null)
 
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
@@ -75,7 +76,10 @@ const ProblemTable = ({ problems }) => {
     }
   };
   
-  const handleAddToPlaylist = async(id) => { };
+  const handleAddToPlaylist = async (problemIds) => { 
+    SetselectedProblemId(problemIds);
+    setIsAddToPlaylistModelOpen(true)
+  };
   const handleCreatePlaylist = async (data) => { 
       await dispatch(createPlaylist(data))
   };
@@ -273,6 +277,11 @@ const ProblemTable = ({ problems }) => {
         onSubmit = {handleCreatePlaylist}
       />
 
+      <AddToPlaylist
+        isOpen = {isAddToPlaylistModelOpen}
+        onClose={() => setIsAddToPlaylistModelOpen(false)}
+        problemIds={selectedProblemId}
+      />
     </div>
   );
 };
