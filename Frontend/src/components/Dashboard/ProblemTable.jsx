@@ -21,8 +21,9 @@ const ProblemTable = ({ problems }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [deletingId, setDeletingId] = useState(null);
   const [isCreateModelOpen, setIsCreateModelOpen] = useState(false);
-  const [isAddToPlaylistModelOpen, setIsAddToPlaylistModelOpen] = useState(false)
-  const [selectedProblemId, SetselectedProblemId] = useState(null)
+  const [isAddToPlaylistModelOpen, setIsAddToPlaylistModelOpen] =
+    useState(false);
+  const [selectedProblemId, SetselectedProblemId] = useState(null);
 
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
@@ -60,11 +61,10 @@ const ProblemTable = ({ problems }) => {
     );
   }, [filteredProblems, currentPage]);
 
-  
   const handleDelete = async (id) => {
     const confirmed = window.confirm("Are you sure?");
     if (!confirmed) return;
-    
+
     setDeletingId(id);
     try {
       await dispatch(deleteProblem(id)).unwrap();
@@ -75,15 +75,15 @@ const ProblemTable = ({ problems }) => {
       setDeletingId(null);
     }
   };
-  
-  const handleAddToPlaylist = async (problemIds) => { 
+
+  const handleAddToPlaylist = async (problemIds) => {
     SetselectedProblemId(problemIds);
-    setIsAddToPlaylistModelOpen(true)
+    setIsAddToPlaylistModelOpen(true);
   };
-  const handleCreatePlaylist = async (data) => { 
-      await dispatch(createPlaylist(data))
+  const handleCreatePlaylist = async (data) => {
+    await dispatch(createPlaylist(data));
   };
-  
+
   return (
     <div className="w-full px-4 py-8 bg-[#000814] home-gradient rounded-2xl shadow-lg">
       <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
@@ -272,13 +272,13 @@ const ProblemTable = ({ problems }) => {
       </div>
 
       <CreatePlaylistModel
-        isOpen = {isCreateModelOpen}
-        onClose = {() => setIsCreateModelOpen(false)}
-        onSubmit = {handleCreatePlaylist}
+        isOpen={isCreateModelOpen}
+        onClose={() => setIsCreateModelOpen(false)}
+        onSubmit={handleCreatePlaylist}
       />
 
       <AddToPlaylist
-        isOpen = {isAddToPlaylistModelOpen}
+        isOpen={isAddToPlaylistModelOpen}
         onClose={() => setIsAddToPlaylistModelOpen(false)}
         problemIds={selectedProblemId}
       />
