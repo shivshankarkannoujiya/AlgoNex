@@ -29,6 +29,7 @@ import {
   getSubmissionCountForProblem,
   getSubmissionForProblem,
 } from "../features/submission/submissionThunks.js";
+import { clearExecutionSubmission } from "../features/execution/executionSlice.js";
 
 const Problem = () => {
   const { id } = useParams();
@@ -56,6 +57,7 @@ const Problem = () => {
     dispatch(getProblemById(id));
     dispatch(getSubmissionCountForProblem(id));
     dispatch(getSubmissionForProblem(id));
+    dispatch(clearExecutionSubmission());
   }, [id, dispatch]);
 
   const successfulSubmissions =
