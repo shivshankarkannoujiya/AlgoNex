@@ -10,7 +10,6 @@ import Home from "./pages/Home.jsx";
 import Signup from "./pages/Signup.jsx";
 import VerifyEmail from "./pages/VerifyEmail.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
-import Leaderboard from "./pages/Leaderboard.jsx";
 import Problem from "./pages/Problem.jsx";
 import Profile from "./pages/Profile.jsx";
 import Submission from "./pages/Submission.jsx";
@@ -68,14 +67,6 @@ const router = createBrowserRouter([
                 ),
             },
 
-            {
-                path: "leaderboard",
-                element: (
-                    <AuthLayout authentication={true}>
-                        <Leaderboard />
-                    </AuthLayout>
-                ),
-            },
             {
                 path: "profile",
                 element: (

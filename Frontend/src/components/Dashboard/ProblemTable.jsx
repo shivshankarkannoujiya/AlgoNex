@@ -23,11 +23,10 @@ const ProblemTable = ({ problems }) => {
   const [isCreateModelOpen, setIsCreateModelOpen] = useState(false);
   const [isAddToPlaylistModelOpen, setIsAddToPlaylistModelOpen] =
     useState(false);
-  const [selectedProblemId, SetselectedProblemId] = useState(null);
+  const [selectedProblemId, setSelectedProblemId] = useState(null);
 
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  console.log(user);
 
   const allTags = useMemo(() => {
     if (!Array.isArray(problems)) return [];
@@ -37,6 +36,7 @@ const ProblemTable = ({ problems }) => {
     );
     return Array.from(tagsSet);
   }, [problems]);
+
   const difficulties = ["EASY", "MEDIUM", "HARD"];
 
   const filteredProblems = useMemo(() => {
@@ -50,7 +50,7 @@ const ProblemTable = ({ problems }) => {
       .filter((problem) =>
         selectedTag === "ALL" ? true : problem.tags?.includes(selectedTag),
       );
-  }, [problems, allTags, search, difficulty, selectedTag]);
+  }, [problems, search, difficulty, selectedTag]);
 
   const itemsPerPage = 5;
   const totalPages = Math.ceil(filteredProblems.length / itemsPerPage);
@@ -62,9 +62,7 @@ const ProblemTable = ({ problems }) => {
   }, [filteredProblems, currentPage]);
 
   const handleDelete = async (id) => {
-    const confirmed = window.confirm("Are you sure?");
-    if (!confirmed) return;
-
+    if (!window.confirm("Are you sure?")) return;
     setDeletingId(id);
     try {
       await dispatch(deleteProblem(id)).unwrap();
@@ -76,20 +74,21 @@ const ProblemTable = ({ problems }) => {
     }
   };
 
-  const handleAddToPlaylist = async (problemIds) => {
-    SetselectedProblemId(problemIds);
+  const handleAddToPlaylist = async (problemId) => {
+    setSelectedProblemId(problemId);
     setIsAddToPlaylistModelOpen(true);
   };
+
   const handleCreatePlaylist = async (data) => {
     await dispatch(createPlaylist(data));
   };
 
   return (
-    <div className="w-full px-4 py-8 bg-[#000814] home-gradient rounded-2xl shadow-lg">
-      <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-        <h2 className="text-2xl font-semibold text-white">Problems</h2>
+    <div className="w-full px-4 py-8  rounded-2xl shadow-xl overflow-hidden">
+      <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+        <h2 className="text-2xl font-bold text-white">Problems</h2>
         <button
-          className="flex items-center gap-2 px-4 py-3 bg-teal-600 hover:bg-teal-700 transition duration-300 rounded-lg text-white font-medium shadow cursor-pointer"
+          className="flex items-center gap-2 px-4 py-2 bg-teal-600 hover:bg-teal-700 rounded-lg text-white font-medium shadow transition"
           onClick={() => setIsCreateModelOpen(true)}
         >
           <Plus className="w-4 h-4" />
@@ -97,31 +96,27 @@ const ProblemTable = ({ problems }) => {
         </button>
       </div>
 
-      {/* Filters */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
-        <div className="flex items-center bg-gray-800 border border-gray-700 px-4 py-2 rounded-md w-96">
-          <input
-            className="bg-transparent w-full text-white placeholder-gray-400 focus:outline-none"
-            placeholder="Search by title"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </div>
-
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <input
+          className="bg-gray-900 border border-gray-500 px-4 py-2 rounded-md text-white w-full "
+          placeholder="Search by title"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
         <select
-          className="bg-gray-800 border border-gray-700 text-white px-4 py-2 rounded-xl w-full "
+          className="bg-gray-900 border border-gray-500 text-white px-4 py-2 rounded-md w-full"
           value={difficulty}
           onChange={(e) => setDifficulty(e.target.value)}
         >
           <option value="ALL">All Difficulties</option>
-          {difficulties.map((diff) => (
-            <option key={diff} value={diff}>
-              {diff.charAt(0).toUpperCase() + diff.slice(1).toLowerCase()}
+          {difficulties.map((d) => (
+            <option key={d} value={d}>
+              {d}
             </option>
           ))}
         </select>
         <select
-          className="bg-gray-800 border border-gray-700 text-white px-4 py-2 rounded-xl w-full"
+          className="bg-gray-900 border border-gray-500 text-white px-4 py-2 rounded-md w-full"
           value={selectedTag}
           onChange={(e) => setSelectedTag(e.target.value)}
         >
@@ -134,9 +129,9 @@ const ProblemTable = ({ problems }) => {
         </select>
       </div>
 
-      <div className="bg-gray-950 p-6 rounded-lg shadow-lg w-full overflow-x-auto">
-        <table className="min-w-full text-sm text-left text-gray-200 border-separate border-spacing-y-3">
-          <thead className="text-xs uppercase text-gray-400 border-b border-gray-600">
+      <div className="overflow-x-auto rounded-lg border border-gray-800">
+        <table className="w-full text-sm text-left text-gray-300 border-separate border-spacing-y-2">
+          <thead className="text-xs uppercase bg-gray-900 text-gray-400">
             <tr>
               <th className="px-4 py-2">Solved</th>
               <th className="px-4 py-2">Title</th>
@@ -149,29 +144,34 @@ const ProblemTable = ({ problems }) => {
             {paginatedProblems.length > 0 ? (
               paginatedProblems.map((problem) => {
                 const isSolved = problem.ProblemSolvedBy?.some(
-                  (userItem) => userItem.userId === user?.id,
+                  (u) => u.userId === user?.id,
                 );
                 return (
                   <tr
                     key={problem.id}
-                    className="bg-gray-900 hover:bg-gray-800 transition rounded-md"
+                    className="bg-gray-900 hover:bg-gray-800 rounded-md"
                   >
-                    <td className="px-4 py-3 align-middle text-center">
+                    <td className="px-4 py-3 text-center">
                       {isSolved ? (
-                        <CheckCircle className="w-5 h-5 text-teal-500" />
+                        <CheckCircle className="w-5 h-5 text-teal-500 mx-auto" />
                       ) : (
-                        <CircleDashed className="w-5 h-5 text-gray-600" />
+                        <CircleDashed className="w-5 h-5 text-gray-500 mx-auto" />
                       )}
                     </td>
-                    <td className="px-4 py-3 font-medium text-white-400  whitespace-nowrap">
-                      <Link to={`/problem/${problem.id}`}>{problem.title}</Link>
+                    <td className="px-4 py-3">
+                      <Link
+                        to={`/problem/${problem.id}`}
+                        className="text-white hover:underline"
+                      >
+                        {problem.title}
+                      </Link>
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex flex-wrap gap-2">
                         {(problem.tags || []).map((tag, idx) => (
                           <span
                             key={idx}
-                            className=" border border-yellow-500 text-yellow-500 text-xs font-semibold px-2 py-0.5 rounded-full"
+                            className="border border-yellow-500 text-yellow-400 text-xs px-2 py-0.5 rounded-full"
                           >
                             {tag}
                           </span>
@@ -182,23 +182,23 @@ const ProblemTable = ({ problems }) => {
                       <span
                         className={`text-xs font-bold px-2 py-1 rounded-full ${
                           problem.difficulty === "EASY"
-                            ? "border border-teal-600 text-teal-600"
+                            ? "text-teal-400 border border-teal-500"
                             : problem.difficulty === "MEDIUM"
-                              ? "border border-yellow-500 text-yellow-500 "
-                              : "border border-red-600 text-red-600"
+                              ? "text-yellow-400 border border-yellow-500"
+                              : "text-red-400 border border-red-600"
                         }`}
                       >
                         {problem.difficulty}
                       </span>
                     </td>
                     <td className="px-4 py-3">
-                      <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
+                      <div className="flex flex-wrap gap-2">
                         {user?.role === "ADMIN" && (
-                          <div className="flex gap-2">
+                          <>
                             <button
                               onClick={() => handleDelete(problem.id)}
                               disabled={deletingId === problem.id}
-                              className="border-2 border-red-600 text-red-500 px-2 py-2 rounded-md flex items-center cursor-pointer"
+                              className="text-red-500 border border-red-500 px-2 py-1 rounded-md flex items-center gap-1 text-xs"
                             >
                               {deletingId === problem.id ? (
                                 "Deleting..."
@@ -206,19 +206,17 @@ const ProblemTable = ({ problems }) => {
                                 <TrashIcon className="w-4 h-4" />
                               )}
                             </button>
-                            <button className="bg-gray-400 text-white px-2 py-1 rounded-md opacity-50 cursor-pointer flex items-center">
-                              <PencilIcon className="w-5 h-5" />
+                            <button className="text-gray-300 border border-gray-500 px-2 py-1 rounded-md text-xs flex items-center">
+                              <PencilIcon className="w-4 h-4" />
                             </button>
-                          </div>
+                          </>
                         )}
                         <button
                           onClick={() => handleAddToPlaylist(problem.id)}
-                          className="border border-gray-500 text-gray-300 hover:bg-gray-700 px-2 py-1 rounded-md flex items-center gap-1 cursor-pointer"
+                          className="text-gray-300 border border-gray-500 px-2 py-1 rounded-md text-xs flex items-center gap-1"
                         >
                           <Bookmark className="w-4 h-4" />
-                          <span className="hidden sm:inline text-sm ">
-                            Save to Playlist
-                          </span>
+                          <span className="hidden sm:inline">Save</span>
                         </button>
                       </div>
                     </td>
@@ -227,10 +225,7 @@ const ProblemTable = ({ problems }) => {
               })
             ) : (
               <tr>
-                <td
-                  colSpan={5}
-                  className="text-center py-6 text-gray-500 text-lg font-semibold"
-                >
+                <td colSpan={5} className="text-center py-6 text-gray-500">
                   No problems found
                 </td>
               </tr>
@@ -239,31 +234,27 @@ const ProblemTable = ({ problems }) => {
         </table>
       </div>
 
-      <div className="flex justify-center mt-6 gap-2">
+      <div className="flex justify-center mt-6 gap-4">
         <button
-          className={`px-3 py-2 text-sm rounded-md border border-gray-500 flex items-center justify-center 
-                ${
-                  currentPage === 1
-                    ? "bg-gray-700 text-gray-400 cursor-not-allowed"
-                    : "bg-gray-800 text-white hover:bg-gray-700"
-                }`}
+          className={`px-3 py-2 text-sm rounded-md ${
+            currentPage === 1
+              ? "bg-gray-700 text-gray-400 cursor-not-allowed"
+              : "bg-gray-800 text-white hover:bg-gray-700"
+          }`}
           disabled={currentPage === 1}
           onClick={() => setCurrentPage((prev) => prev - 1)}
         >
           Prev
         </button>
-
-        <span className="px-3 py-2 text-sm rounded-md text-gray-300 bg-gray-700 border border-gray-500 ">
+        <span className="px-4 py-2 text-white bg-gray-700 rounded-md text-sm">
           {currentPage} / {totalPages}
         </span>
-
         <button
-          className={`px-3 py-1 text-sm rounded-md border border-gray-500 
-                ${
-                  currentPage === totalPages
-                    ? "bg-gray-700 text-gray-400 cursor-not-allowed"
-                    : "bg-gray-800 text-white hover:bg-gray-700"
-                }`}
+          className={`px-3 py-2 text-sm rounded-md ${
+            currentPage === totalPages
+              ? "bg-gray-700 text-gray-400 cursor-not-allowed"
+              : "bg-gray-800 text-white hover:bg-gray-700"
+          }`}
           disabled={currentPage === totalPages}
           onClick={() => setCurrentPage((prev) => prev + 1)}
         >
@@ -276,7 +267,6 @@ const ProblemTable = ({ problems }) => {
         onClose={() => setIsCreateModelOpen(false)}
         onSubmit={handleCreatePlaylist}
       />
-
       <AddToPlaylist
         isOpen={isAddToPlaylistModelOpen}
         onClose={() => setIsAddToPlaylistModelOpen(false)}
