@@ -94,7 +94,7 @@ const getPlaylistDetails = asyncHandler(async (req, res) => {
     }
 
     try {
-        const playlists = await prisma.playlist.findMany({
+        const playlists = await prisma.playlist.findUnique({
             where: {
                 id: playlistId,
                 userId: req.user?.id,
@@ -165,6 +165,7 @@ const deletePlaylist = asyncHandler(async (req, res) => {
     const playlist = await prisma.playlist.findUnique({
         where: {
             id: playlistId,
+            userId: req.user?.id
         },
     });
 
