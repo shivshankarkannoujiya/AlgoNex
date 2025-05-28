@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import SignoutBtn from "../Auth/SignOutButton";
+import { Code, User, Lightbulb, List, LayoutDashboard, LogOutIcon } from "lucide-react";
 
 const UserDropdown = ({ user }) => {
   const [open, setOpen] = useState(false);
@@ -46,33 +47,38 @@ const UserDropdown = ({ user }) => {
         <div className="p-2 space-y-2">
           <Link
             to="/profile"
-            className="block px-4 py-2 text-sm rounded-md hover:bg-[#1a2432]"
+            className=" px-4 py-2 text-sm rounded-md hover:bg-[#1a2432] flex items-center justify-start gap-2"
           >
+            <User className="h-4 w-4" />
             Profile
           </Link>
           <Link
             to="/dashboard"
-            className="block px-4 py-2 text-sm rounded-md hover:bg-[#1a2432]"
+            className="px-4 py-2 text-sm rounded-md hover:bg-[#1a2432] flex items-center justify-start gap-2"
           >
+            <LayoutDashboard className="h-4 w-4 text-blue-500" />
             Dashboard
           </Link>
           <Link
             to="/submissions"
-            className="block px-4 py-2 text-sm rounded-md hover:bg-[#1a2432]"
+            className=" px-4 py-2 text-sm rounded-md hover:bg-[#1a2432] flex items-center justify-start gap-2"
           >
+            <Lightbulb className="h-4 w-4 text-amber-500" />
             My Submissions
           </Link>
           <Link
             to="/mylist"
-            className="block px-4 py-2 text-sm rounded-md hover:bg-[#1a2432]"
+            className="px-4 py-2 text-sm rounded-md hover:bg-[#1a2432] flex items-center justify-start gap-2"
           >
-            Favourite List
+            <List className="h-4 w-4 text-teal-500" />
+            My List
           </Link>
           {user?.role === "ADMIN" && (
             <Link
               to="/create-problem"
-              className="block px-4 py-2 text-sm rounded-md hover:bg-[#1a2432]"
+              className=" px-4 py-2 text-sm rounded-md hover:bg-[#1a2432] flex items-center justify-start gap-2"
             >
+              <Code className="h-4 w-4 text-emerald-500" />
               Add Problem
             </Link>
           )}
