@@ -25,7 +25,6 @@ import { executeCode } from "../features/execution/executionThunks";
 import { getJudge0LanguageId } from "../Service/lang.js";
 import { SubmissionResults, SubmissionList } from "../components/index.js";
 import {
-  getAllSubmissions,
   getSubmissionCountForProblem,
   getSubmissionForProblem,
 } from "../features/submission/submissionThunks.js";
@@ -39,7 +38,6 @@ const Problem = () => {
   const {
     submissionCount,
     submission: submissionForProblem,
-    submissions,
     isLoading: isSubmissionLoading,
   } = useSelector((state) => state.submission);
 
