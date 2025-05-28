@@ -89,3 +89,32 @@ body {
     pointer-events: none;
     filter: blur(1px);
 }
+
+.react-calendar-heatmap .color-empty {
+    fill: var(--tw-colors-heatmap-empty);
+}
+
+.react-calendar-heatmap .color-heat-1 {
+    fill: var(--tw-colors-heatmap-level-1);
+}
+
+.react-calendar-heatmap .color-heat-2 {
+    fill: var(--tw-colors-heatmap-level-2);
+}
+
+.react-calendar-heatmap .color-heat-3 {
+    fill: var(--tw-colors-heatmap-level-3);
+}
+
+.react-calendar-heatmap .color-heat-4 {
+    fill: var(--tw-colors-heatmap-level-4);
+}
+
+.react-calendar-heatmap .color-heat-5 {
+    fill: var(--tw-colors-heatmap-level-5);
+}
+
+.react-calendar-heatmap text {
+    fill: var(--tw-colors-algo-text-muted);
+    font-size: 10px;
+}

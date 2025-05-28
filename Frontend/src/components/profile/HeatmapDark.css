@@ -1,0 +1,36 @@
+.react-calendar-heatmap .color-empty {
+  fill: #161616;
+  stroke: #2a2a2a;
+  stroke-width: 0.5px;
+}
+
+.react-calendar-heatmap .color-minimal {
+  fill: #004d4d;
+  stroke: none;
+}
+
+.react-calendar-heatmap .color-low {
+  fill: #007373;
+  stroke: none;
+}
+
+.react-calendar-heatmap .color-medium {
+  fill: #009999;
+  stroke: none;
+}
+
+.react-calendar-heatmap .color-high {
+  fill: #00e5ff;
+  stroke: none;
+}
+
+.react-calendar-heatmap .text-color-light {
+  fill: #bbbbbb;
+}
+.react-calendar-heatmap .text-color-dark {
+  fill: #888888;
+}
+
+.react-calendar-heatmap {
+  min-width: 500px;
+}

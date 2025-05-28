@@ -157,6 +157,12 @@ class ApiClient {
     });
   }
 
+  async getSubmissionHeatMap() {
+    return this.customFetch(`/submission/getSubmissionheatmap`, {
+      method: "GET"
+    })
+  }
+
   async createPlaylist({ name, description }) {
     return this.customFetch("/playlist/createPlaylist", {
       method: "POST",
