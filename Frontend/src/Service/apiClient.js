@@ -179,6 +179,9 @@ class ApiClient {
   async addProblemToPlaylist(playlistId, problemIds) {
     return this.customFetch(`/playlist/${playlistId}/addProblem`, {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json", 
+      },
       body: JSON.stringify({ problemIds }),
     });
   }
