@@ -1,9 +1,16 @@
-import React from 'react'
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
+import ProfileCard from "../components/profile/ProfileCard";
+
 
 const Profile = () => {
-  return (
-    <div>Profile</div>
-  )
-}
+  const { user } = useSelector((state) => state.auth);
 
-export default Profile
+  return (
+    <div className="p-6 min-h-screen bg-zinc-950 text-white flex justify-center">
+      <ProfileCard user={user} />
+    </div>
+  );
+};
+
+export default Profile;

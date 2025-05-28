@@ -41,8 +41,8 @@ const Header = () => {
 
         <div className="hidden md:flex flex-1 justify-center  items-center">
           <ul className="flex items-center gap-15 font-medium text-white">
-            {navLinks.map((link) => (
-              <li key={link.path}>
+            {navLinks.map((link, index) => (
+              <li key={index}>
                 <NavLink
                   to={link.path}
                   className={({ isActive }) =>
