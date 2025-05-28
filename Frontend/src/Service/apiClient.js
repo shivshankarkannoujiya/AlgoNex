@@ -147,13 +147,52 @@ class ApiClient {
 
   async getSubmissionForProblem(id) {
     return this.customFetch(`/submission/getSubmission/${id}`, {
-      method: "GET"
+      method: "GET",
     });
   }
 
   async getSubmissionCountForProblem(id) {
     return this.customFetch(`/submission/getSubmissionCount/${id}`, {
-      method: "GET"
+      method: "GET",
+    });
+  }
+
+  async createPlaylist({ name, description }) {
+    return this.customFetch("/playlist/create-playlist", {
+      method: "POST",
+      body: JSON.stringify({ name, description }),
+    });
+  }
+
+  async getAllPlaylists() {
+    return this.customFetch("/playlist", {
+      method: "GET",
+    });
+  }
+
+  async getPlaylistDetail(playlistId) {
+    return this.customFetch(`/playlist/${playlistId}`, {
+      method: "GET",
+    });
+  }
+
+  async addProblemToPlaylist(playlistId, problemIds) {
+    return this.customFetch(`/playlist/${playlistId}/add-problem`, {
+      method: "POST",
+      body: JSON.stringify({ problemIds }),
+    });
+  }
+
+  async removeProblemFromPlaylist(playlistId, problemIds) {
+    return this.customFetch(`/playlist/${playlistId}/remove-problems`, {
+      method: "POST",
+      body: JSON.stringify(problemIds),
+    });
+  }
+
+  async deletePlaylist(playlistId) {
+    return this.customFetch(`/playlist/${playlistId}`, {
+      method: "DELETE",
     });
   }
 }

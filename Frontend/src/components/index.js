@@ -30,6 +30,11 @@ import Preloader from "./Common/Preloader";
 import KeyFeatures from "./Home/KeyFeatures";
 import AnimatedDivider from "./Home/AnimatedDivider ";
 
+/**@description Playlist Components */
+import CreatePlaylistModel from "./playlist/CreatePlaylistModel";
+import AddToPlaylist from "./playlist/AddToPlaylist";
+
+
 
 
 export {
@@ -51,5 +56,7 @@ export {
     CreateProblemForm,
     ProblemTable,
     SubmissionResults,
-    SubmissionList
+    SubmissionList,
+    CreatePlaylistModel,
+    AddToPlaylist
 };
