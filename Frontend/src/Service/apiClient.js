@@ -158,7 +158,7 @@ class ApiClient {
   }
 
   async createPlaylist({ name, description }) {
-    return this.customFetch("/playlist/create-playlist", {
+    return this.customFetch("/playlist/createPlaylist", {
       method: "POST",
       body: JSON.stringify({ name, description }),
     });
@@ -177,14 +177,14 @@ class ApiClient {
   }
 
   async addProblemToPlaylist(playlistId, problemIds) {
-    return this.customFetch(`/playlist/${playlistId}/add-problem`, {
+    return this.customFetch(`/playlist/${playlistId}/addProblem`, {
       method: "POST",
       body: JSON.stringify({ problemIds }),
     });
   }
 
   async removeProblemFromPlaylist(playlistId, problemIds) {
-    return this.customFetch(`/playlist/${playlistId}/remove-problems`, {
+    return this.customFetch(`/playlist/${playlistId}/removeProblem`, {
       method: "POST",
       body: JSON.stringify(problemIds),
     });
