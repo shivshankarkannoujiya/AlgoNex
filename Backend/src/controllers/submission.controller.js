@@ -10,6 +10,14 @@ const getAllSubmission = asyncHandler(async (req, res) => {
         where: {
             userId,
         },
+        include: {
+            problem: {
+                select: {
+                    title: true,
+                    description: true
+                }
+            }
+        }
     });
 
     if (!submissions) {
