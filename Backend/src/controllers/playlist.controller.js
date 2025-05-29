@@ -165,7 +165,7 @@ const deletePlaylist = asyncHandler(async (req, res) => {
     const playlist = await prisma.playlist.findUnique({
         where: {
             id: playlistId,
-            userId: req.user?.id
+            userId: req.user?.id,
         },
     });
 
@@ -243,7 +243,7 @@ const removeProblemFromPlaylist = asyncHandler(async (req, res) => {
 
 const updatePlaylist = asyncHandler(async (req, res) => {
     const { name, description } = req.body;
-    const playlistId = req.params.id;
+    const { playlistId } = req.params;
     const userId = req.user?.id;
 
     if (!playlistId) {
@@ -273,7 +273,10 @@ const updatePlaylist = asyncHandler(async (req, res) => {
         });
 
         if (duplicate) {
-            throw new ApiError(409, "You already have a playlist with this name");
+            throw new ApiError(
+                409,
+                "You already have a playlist with this name",
+            );
         }
     }
 
@@ -292,15 +295,14 @@ const updatePlaylist = asyncHandler(async (req, res) => {
                 new ApiResponse(
                     200,
                     { playlist: updatedPlaylist },
-                    "Playlist updated successfully"
-                )
+                    "Playlist updated successfully",
+                ),
             );
     } catch (error) {
         console.error("Error while updating playlist: ", error);
         throw new ApiError(500, "Failed to update playlist");
     }
 });
-
 
 export {
     createPlaylist,
@@ -309,5 +311,5 @@ export {
     addProblemToPlaylist,
     deletePlaylist,
     removeProblemFromPlaylist,
-    updatePlaylist
+    updatePlaylist,
 };
