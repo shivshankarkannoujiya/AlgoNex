@@ -73,6 +73,12 @@ class ApiClient {
     return this.customFetch("/users/me");
   }
 
+  async getUserDashboardSummary() {
+    return this.customFetch("/users/user-dashboard", {
+      method: "GET",
+    });
+  }
+
   async logout() {
     return this.customFetch("/users/logout", {
       method: "POST",
@@ -159,8 +165,8 @@ class ApiClient {
 
   async getSubmissionHeatMap() {
     return this.customFetch(`/submission/getSubmissionheatmap`, {
-      method: "GET"
-    })
+      method: "GET",
+    });
   }
 
   async createPlaylist({ name, description }) {
@@ -186,7 +192,7 @@ class ApiClient {
     return this.customFetch(`/playlist/${playlistId}/addProblem`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json", 
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ problemIds }),
     });

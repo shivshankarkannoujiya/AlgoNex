@@ -41,8 +41,7 @@ const SubmissionHeatmap = ({ userId }) => {
         });
         setTotalLast30Days(last30.reduce((sum, d) => sum + d.count, 0));
 
-        // --- Generate Day-to-Day Chart Data ---
-        const CHART_DAYS_COUNT = 60; // Show data for the last 60 days
+        const CHART_DAYS_COUNT = 60; 
         const chartDataMap = new Map(sortedData.map(d => [d.date, d.count]));
         const newDailyChartData = [];
 
@@ -54,9 +53,7 @@ const SubmissionHeatmap = ({ userId }) => {
           newDailyChartData.push({ date: formattedDate, count: count });
         }
         setDailyChartData(newDailyChartData);
-        // --- End Generate Day-to-Day Chart Data ---
 
-        // Calculate Streak
         let current = 0;
         let longest = 0;
         let tempCurrentStreak = 0;
@@ -92,8 +89,8 @@ const SubmissionHeatmap = ({ userId }) => {
   }, [userId]);
 
   return (
-    <div className="p-6 rounded-2xl shadow-lg w-full overflow-hidden" style={{ backgroundColor: "#141414" }}>
-      <h2 className="text-white font-extrabold text-2xl mb-4 border-b-2 border-b-[#00E5FF] pb-2 inline-block">
+    <div className="p-6 rounded-2xl shadow-lg w-full max-w-7xl mx-auto overflow-hidden" style={{ backgroundColor: "#141414" }}>
+      <h2 className="text-white font-extrabold text-2xl mb-4 pb-2 inline-block">
         Activity Grid
       </h2>
 

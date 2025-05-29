@@ -1,13 +1,17 @@
 import { useSelector } from "react-redux";
 import ProfileCard from "../components/profile/ProfileCard";
 import SubmissionHeatmap from "../components/profile/SubmissionHeatmap";
+import StatsSummaryCard from "../components/profile/StatsSummary";
 
 const Profile = () => {
   const { user } = useSelector((state) => state.auth);
 
   return (
-    <div className="p-6 min-h-screen bg-zinc-950 text-white">
-      <ProfileCard user={user} />
+    <div className="p-6 min-h-screen bg-[#000814] home-gradient text-white">
+      <div className="flex gap-20">
+        <ProfileCard user={user} />
+        <StatsSummaryCard/>
+      </div>
       <SubmissionHeatmap userId={user?.id} />
     </div>
   );
