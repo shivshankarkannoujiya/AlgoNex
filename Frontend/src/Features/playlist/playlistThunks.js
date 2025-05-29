@@ -89,11 +89,34 @@ const removeProblemFromPlaylist = createAsyncThunk(
   },
 );
 
+const updatePlaylist = createAsyncThunk(
+  "playlist/update",
+  async ({ playlistId, name, description }, thunkAPI) => {
+    try {
+      const res = await apiClient.updatePlaylist({
+        playlistId,
+        name,
+        description,
+      });
+      toast.success("Playlist updated successfully");
+      return res.playlist;
+    } catch (error) {
+      const message =
+        error.response?.data?.error ||
+        error.message ||
+        "Failed to update playlist";
+      toast.error(message);
+      return thunkAPI.rejectWithValue(message);
+    }
+  },
+);
+
 export {
-    createPlaylist,
-    getAllPlaylists,
-    getPlaylistDetail,
-    addProblemToPlaylist,
-    removeProblemFromPlaylist,
-    deletePlaylist
-}
+  createPlaylist,
+  getAllPlaylists,
+  getPlaylistDetail,
+  addProblemToPlaylist,
+  removeProblemFromPlaylist,
+  deletePlaylist,
+  updatePlaylist,
+};

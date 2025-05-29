@@ -119,6 +119,25 @@ const playlistSlice = createSlice({
       .addCase(deletePlaylist.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
+      })
+      .addCase(updatePlaylist.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(updatePlaylist.fulfilled, (state, action) => {
+        state.isLoading = false;
+        const updated = action.payload;
+        const index = state.playlists.findIndex((p) => p.id === updated.id);
+        if (index !== -1) {
+          state.playlists[index] = updated;
+        }
+        if (state.currentPlaylist?.id === updated.id) {
+          state.currentPlaylist = updated;
+        }
+      })
+      .addCase(updatePlaylist.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
       });
   },
 });

@@ -7,6 +7,7 @@ import {
     addProblemToPlaylist,
     deletePlaylist,
     removeProblemFromPlaylist,
+    updatePlaylist,
 } from "../controllers/playlist.controller.js";
 
 const router = Router();
@@ -19,5 +20,5 @@ router.route("/:playlistId").delete(isLoggedIn, deletePlaylist);
 router
     .route("/:playlistId/removeProblem")
     .delete(isLoggedIn, removeProblemFromPlaylist);
-
+router.route("/:playlistId/update").put(isLoggedIn, updatePlaylist);
 export default router;

@@ -210,6 +210,13 @@ class ApiClient {
       method: "DELETE",
     });
   }
+
+  async updatePlaylist({ playlistId, name, description }) {
+    return this.customFetch(`/playlist/${playlistId}/update`, {
+      method: "PUT",
+      body: JSON.stringify({ name, description }),
+    });
+  }
 }
 
 const apiClient = new ApiClient();

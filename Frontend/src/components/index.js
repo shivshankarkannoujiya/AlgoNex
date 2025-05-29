@@ -33,6 +33,8 @@ import AnimatedDivider from "./Home/AnimatedDivider ";
 /**@description Playlist Components */
 import CreatePlaylistModel from "./playlist/CreatePlaylistModel";
 import AddToPlaylist from "./playlist/AddToPlaylist";
+import PlaylistDetails from "./profile/PlaylistDetails";
+
 
 
 
@@ -58,5 +60,6 @@ export {
     SubmissionResults,
     SubmissionList,
     CreatePlaylistModel,
-    AddToPlaylist
+    AddToPlaylist,
+    PlaylistDetails
 };
