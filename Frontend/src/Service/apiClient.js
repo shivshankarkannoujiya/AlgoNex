@@ -211,9 +211,12 @@ class ApiClient {
     });
   }
 
-  async updatePlaylist({ playlistId, name, description }) {
-    return this.customFetch(`/playlist/${playlistId}/update`, {
+  async updatePlaylist({ id, name, description }) {
+    return this.customFetch(`/playlist/${id}/update`, {
       method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({ name, description }),
     });
   }

@@ -4,7 +4,7 @@ import App from "./App.jsx";
 import { Provider } from "react-redux";
 import store from "./Store/store.js";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { AuthLayout, Signin } from "./components/index.js";
+import { AuthLayout, Signin, PlaylistDetails } from "./components/index.js";
 
 import Home from "./pages/Home.jsx";
 import Signup from "./pages/Signup.jsx";
@@ -14,97 +14,106 @@ import Problem from "./pages/Problem.jsx";
 import Profile from "./pages/Profile.jsx";
 import Submission from "./pages/Submission.jsx";
 import MyList from "./pages/MyList.jsx";
-import AddProblem from "./pages/AddProblem.jsx";
+import AddProblem from "./pages/AddProblem.jsx"
 
 const router = createBrowserRouter([
-    {
+  {
+    path: "/",
+    element: <App />,
+    children: [
+      {
         path: "/",
-        element: <App />,
-        children: [
-            {
-                path: "/",
-                element: <Home />,
-            },
+        element: <Home />,
+      },
 
-            {
-                path: "login",
-                element: (
-                    <AuthLayout authentication={false}>
-                        <Signin />
-                    </AuthLayout>
-                ),
-            },
+      {
+        path: "login",
+        element: (
+          <AuthLayout authentication={false}>
+            <Signin />
+          </AuthLayout>
+        ),
+      },
 
-            {
-                path: "signup",
-                element: (
-                    <AuthLayout authentication={false}>
-                        <Signup />
-                    </AuthLayout>
-                ),
-            },
+      {
+        path: "signup",
+        element: (
+          <AuthLayout authentication={false}>
+            <Signup />
+          </AuthLayout>
+        ),
+      },
 
-            {
-                path: "verify/:token",
-                element: <VerifyEmail />,
-            },
+      {
+        path: "verify/:token",
+        element: <VerifyEmail />,
+      },
 
-            {
-                path: "dashboard",
-                element: (
-                    <AuthLayout authentication={true}>
-                        <Dashboard />
-                    </AuthLayout>
-                ),
-            },
+      {
+        path: "dashboard",
+        element: (
+          <AuthLayout authentication={true}>
+            <Dashboard />
+          </AuthLayout>
+        ),
+      },
 
-            {
-                path: "problem/:id",
-                element: (
-                    <AuthLayout authentication={true}>
-                        <Problem />
-                    </AuthLayout>
-                ),
-            },
+      {
+        path: "problem/:id",
+        element: (
+          <AuthLayout authentication={true}>
+            <Problem />
+          </AuthLayout>
+        ),
+      },
 
-            {
-                path: "profile",
-                element: (
-                    <AuthLayout authentication={true}>
-                        <Profile />
-                    </AuthLayout>
-                ),
-            },
-            {
-                path: "submissions",
-                element: (
-                    <AuthLayout authentication={true}>
-                        <Submission />
-                    </AuthLayout>
-                ),
-            },
-            {
-                path: "mylist",
-                element: (
-                    <AuthLayout authentication={true}>
-                        <MyList />
-                    </AuthLayout>
-                ),
-            },
-            {
-                path: "create-problem",
-                element: (
-                    <AuthLayout authentication={true}>
-                        <AddProblem />
-                    </AuthLayout>
-                ),
-            },
-        ],
-    },
+      {
+        path: "profile",
+        element: (
+          <AuthLayout authentication={true}>
+            <Profile />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: "submissions",
+        element: (
+          <AuthLayout authentication={true}>
+            <Submission />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: "mylist",
+        element: (
+          <AuthLayout authentication={true}>
+            <MyList />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: "create-problem",
+        element: (
+          <AuthLayout authentication={true}>
+            <AddProblem />
+          </AuthLayout>
+        ),
+      },
+
+      {
+        path: "playlist/:id",
+        element: (
+          <AuthLayout authentication={true}>
+            <PlaylistDetails />
+          </AuthLayout>
+        ),
+      },
+    ],
+  },
 ]);
 
 createRoot(document.getElementById("root")).render(
-    <Provider store={store}>
-        <RouterProvider router={router} />
-    </Provider>,
+  <Provider store={store}>
+    <RouterProvider router={router} />
+  </Provider>,
 );

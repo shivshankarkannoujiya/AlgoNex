@@ -6,6 +6,7 @@ import {
   addProblemToPlaylist,
   deletePlaylist,
   removeProblemFromPlaylist,
+  updatePlaylist,
 } from "./playlistThunks";
 
 const initialState = {
@@ -127,14 +128,20 @@ const playlistSlice = createSlice({
       .addCase(updatePlaylist.fulfilled, (state, action) => {
         state.isLoading = false;
         const updated = action.payload;
+
         const index = state.playlists.findIndex((p) => p.id === updated.id);
         if (index !== -1) {
           state.playlists[index] = updated;
         }
+
         if (state.currentPlaylist?.id === updated.id) {
-          state.currentPlaylist = updated;
+          state.currentPlaylist = {
+            ...state.currentPlaylist,
+            ...updated,
+          };
         }
       })
+
       .addCase(updatePlaylist.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;

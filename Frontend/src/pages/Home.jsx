@@ -6,7 +6,6 @@ const Home = () => {
       <HeroSection />
       <AnimatedDivider />
       <KeyFeatures />
-      <AnimatedDivider />
     </div>
   );
 };

@@ -91,15 +91,18 @@ const removeProblemFromPlaylist = createAsyncThunk(
 
 const updatePlaylist = createAsyncThunk(
   "playlist/update",
-  async ({ playlistId, name, description }, thunkAPI) => {
+  async ({ id, name, description }, thunkAPI) => {
     try {
       const res = await apiClient.updatePlaylist({
-        playlistId,
+        id,
         name,
         description,
       });
       toast.success("Playlist updated successfully");
-      return res.playlist;
+      console.log("FROM THUNK", res);
+      console.log("FROM THUNK", res.data);
+      console.log("FROM THUNK", res.data.playlist);
+      return res.data.playlist;
     } catch (error) {
       const message =
         error.response?.data?.error ||
