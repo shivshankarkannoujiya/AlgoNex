@@ -7,7 +7,7 @@ const ProfileCard = ({ user }) => {
   if (!user) return null;
 
   return (
-    <div className="bg-zinc-900 text-white rounded-2xl p-6 shadow-md w-full max-w-sm">
+    <div className="bg-[#000814] text-white rounded-2xl p-6 shadow-md w-full max-w-sm border border-gray-600">
       <div className="flex items-center space-x-4">
         <img
           src={user?.avatar || "https://avatar.iran.liara.run/public/boy"}
@@ -22,7 +22,7 @@ const ProfileCard = ({ user }) => {
         </div>
       </div>
 
-      <div className="mt-4 bg-zinc-800 rounded-lg px-2 py-2 text-center">
+      <div className="mt-4 bg-[#0A1128] rounded-lg px-2 py-2 text-center">
         <p className="text-sm text-zinc-400">Role</p>
         <p className="text-lg font-bold text-teal-400">{user?.role}</p>
       </div>
