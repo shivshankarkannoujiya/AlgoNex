@@ -2,7 +2,7 @@ import { prisma } from "../lib/db.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/api-response.js";
 import { ApiError } from "../utils/api-error.js";
-import { UserRole } from "../generated/prisma/index.js";
+import { ProblemDifficultyLevel, UserRole } from "../generated/prisma/index.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import {
     sendEmail,
@@ -253,7 +253,7 @@ const getCurrentUser = asyncHandler(async (req, res) => {
             username: true,
             email: true,
             role: true,
-            createdAt: true
+            createdAt: true,
         },
     });
 
@@ -454,6 +454,92 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
     );
 });
 
+const getUserDashboardSummary = asyncHandler(async (req, res) => {
+    const userId = req.user?.id;
+    if (!userId) {
+        throw new ApiError(401, "Unauthorized");
+    }
+
+    const totalSubmissions = await prisma.submission.count({
+        where: { userId },
+    });
+
+    const solvedProblems = await prisma.problem.findMany({
+        where: {
+            ProblemSolvedBy: {
+                some: { userId },
+            },
+        },
+        select: {
+            id: true,
+            difficulty: true,
+        },
+    });
+
+    const difficultyCount = { easy: 0, medium: 0, hard: 0 };
+    for (const p of solvedProblems) {
+        if (p.difficulty === ProblemDifficultyLevel.EASY) {
+            difficultyCount.easy++;
+        } else if (p.difficulty === ProblemDifficultyLevel.MEDIUM) {
+            difficultyCount.medium++;
+        } else if (p.difficulty === ProblemDifficultyLevel.HARD) {
+            difficultyCount.hard++;
+        }
+    }
+
+    const totalProblems = await prisma.problem.groupBy({
+        by: ["difficulty"],
+        _count: { difficulty: true },
+    });
+
+    const problemTotals = {
+        easy:
+            totalProblems.find(
+                (p) => p.difficulty === ProblemDifficultyLevel.EASY,
+            )?._count.difficulty || 0,
+        medium:
+            totalProblems.find(
+                (p) => p.difficulty === ProblemDifficultyLevel.MEDIUM,
+            )?._count.difficulty || 0,
+        hard:
+            totalProblems.find(
+                (p) => p.difficulty === ProblemDifficultyLevel.HARD,
+            )?._count.difficulty || 0,
+    };
+
+    const acceptanceRate =
+        totalSubmissions > 0
+            ? parseFloat(
+                  ((solvedProblems.length / totalSubmissions) * 100).toFixed(1),
+              )
+            : 0.0;
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            {
+                totalSubmissions,
+                acceptanceRate,
+                problems: {
+                    easy: {
+                        solved: difficultyCount.easy,
+                        total: problemTotals.easy,
+                    },
+                    medium: {
+                        solved: difficultyCount.medium,
+                        total: problemTotals.medium,
+                    },
+                    hard: {
+                        solved: difficultyCount.hard,
+                        total: problemTotals.hard,
+                    },
+                },
+            },
+            "Dashboard summary fetched",
+        ),
+    );
+});
+
 export {
     registerUser,
     verifyEmail,
@@ -466,4 +552,5 @@ export {
     resetForgottenPassword,
     changeCurrentPassword,
     updateAccountDetails,
+    getUserDashboardSummary
 };

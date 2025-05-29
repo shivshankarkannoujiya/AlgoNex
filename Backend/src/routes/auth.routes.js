@@ -3,6 +3,7 @@ import {
     changeCurrentPassword,
     forgotPasswordRequest,
     getCurrentUser,
+    getUserDashboardSummary,
     loginUser,
     logOutUser,
     refreshAccessToken,
@@ -47,6 +48,7 @@ router
 /** @description protected routes */
 router.route("/logout").post(isLoggedIn, logOutUser);
 router.route("/me").get(isLoggedIn, getCurrentUser);
+router.route("/user-dashboard").get(isLoggedIn, getUserDashboardSummary)
 router
     .route("/change-password")
     .post(
@@ -60,5 +62,6 @@ router
         validate(isLoggedIn, validate(userUpdateAccountDetailsSchema)),
         updateAccountDetails,
     );
+    
 
 export default router;
