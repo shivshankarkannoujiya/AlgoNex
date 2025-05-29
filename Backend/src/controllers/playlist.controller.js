@@ -241,6 +241,67 @@ const removeProblemFromPlaylist = asyncHandler(async (req, res) => {
     }
 });
 
+const updatePlaylist = asyncHandler(async (req, res) => {
+    const { name, description } = req.body;
+    const playlistId = req.params.id;
+    const userId = req.user?.id;
+
+    if (!playlistId) {
+        throw new ApiError(400, "Playlist ID is required");
+    }
+
+    const existingPlaylist = await prisma.playlist.findUnique({
+        where: { id: playlistId },
+    });
+
+    if (!existingPlaylist) {
+        throw new ApiError(404, "Playlist not found");
+    }
+
+    if (existingPlaylist.userId !== userId) {
+        throw new ApiError(403, "Unauthorized to update this playlist");
+    }
+
+    if (name && name !== existingPlaylist.name) {
+        const duplicate = await prisma.playlist.findUnique({
+            where: {
+                name_userId: {
+                    name,
+                    userId,
+                },
+            },
+        });
+
+        if (duplicate) {
+            throw new ApiError(409, "You already have a playlist with this name");
+        }
+    }
+
+    try {
+        const updatedPlaylist = await prisma.playlist.update({
+            where: { id: playlistId },
+            data: {
+                name,
+                description,
+            },
+        });
+
+        return res
+            .status(200)
+            .json(
+                new ApiResponse(
+                    200,
+                    { playlist: updatedPlaylist },
+                    "Playlist updated successfully"
+                )
+            );
+    } catch (error) {
+        console.error("Error while updating playlist: ", error);
+        throw new ApiError(500, "Failed to update playlist");
+    }
+});
+
+
 export {
     createPlaylist,
     getAllListDetails,
@@ -248,4 +309,5 @@ export {
     addProblemToPlaylist,
     deletePlaylist,
     removeProblemFromPlaylist,
+    updatePlaylist
 };
