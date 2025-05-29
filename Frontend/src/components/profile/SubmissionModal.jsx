@@ -1,4 +1,25 @@
 import { formatDistanceToNow } from "date-fns";
+import { Light as SyntaxHighlighter } from "react-syntax-highlighter";
+import js from "react-syntax-highlighter/dist/esm/languages/hljs/javascript";
+import python from "react-syntax-highlighter/dist/esm/languages/hljs/python";
+import cpp from "react-syntax-highlighter/dist/esm/languages/hljs/cpp";
+import java from "react-syntax-highlighter/dist/esm/languages/hljs/java";
+import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
+
+SyntaxHighlighter.registerLanguage("javascript", js);
+SyntaxHighlighter.registerLanguage("python", python);
+SyntaxHighlighter.registerLanguage("cpp", cpp);
+SyntaxHighlighter.registerLanguage("java", java);
+
+const getLanguageKey = (lang) => {
+  const normalized = lang.toLowerCase();
+  if (normalized.includes("python")) return "python";
+  if (normalized.includes("c++")) return "cpp";
+  if (normalized.includes("java")) return "java";
+  if (normalized.includes("javascript") || normalized.includes("js"))
+    return "javascript";
+  return "text";
+};
 
 const SubmissionModal = ({ isOpen, onClose, submission }) => {
   if (!isOpen || !submission) return null;
@@ -21,9 +42,7 @@ const SubmissionModal = ({ isOpen, onClose, submission }) => {
   );
 
   function capitalizeEveryWord(str) {
-    if (!str) {
-      return "";
-    }
+    if (!str) return "";
     return str
       .toLowerCase()
       .split(" ")
@@ -45,7 +64,7 @@ const SubmissionModal = ({ isOpen, onClose, submission }) => {
           {problem?.title}
         </h2>
 
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between flex-wrap gap-4">
           <div>
             <p>
               <strong>Time:</strong> {totalTime.toFixed(2)} s
@@ -79,9 +98,18 @@ const SubmissionModal = ({ isOpen, onClose, submission }) => {
 
         <div>
           <h3 className="text-lg font-semibold mt-4 mb-2">Submitted Code:</h3>
-          <pre className="bg-[#001F3F] p-4 rounded-md overflow-auto text-sm whitespace-pre-wrap">
-            <code>{sourceCode}</code>
-          </pre>
+          <SyntaxHighlighter
+            language={getLanguageKey(language)}
+            style={atomOneDark}
+            customStyle={{
+              padding: "1rem",
+              borderRadius: "0.5rem",
+              background: "#001F3F",
+              fontSize: "0.85rem",
+            }}
+          >
+            {sourceCode}
+          </SyntaxHighlighter>
         </div>
       </div>
     </div>
