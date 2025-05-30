@@ -13,7 +13,6 @@ import Dashboard from "./pages/Dashboard.jsx";
 import Problem from "./pages/Problem.jsx";
 import Profile from "./pages/Profile.jsx";
 import Submission from "./pages/Submission.jsx";
-import MyList from "./pages/MyList.jsx";
 import AddProblem from "./pages/AddProblem.jsx"
 
 const router = createBrowserRouter([
@@ -80,14 +79,6 @@ const router = createBrowserRouter([
         element: (
           <AuthLayout authentication={true}>
             <Submission />
-          </AuthLayout>
-        ),
-      },
-      {
-        path: "mylist",
-        element: (
-          <AuthLayout authentication={true}>
-            <MyList />
           </AuthLayout>
         ),
       },

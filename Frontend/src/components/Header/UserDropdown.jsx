@@ -67,7 +67,7 @@ const UserDropdown = ({ user }) => {
             My Submissions
           </Link>
           <Link
-            to="/mylist"
+            to="#"
             className="px-4 py-2 text-sm rounded-md hover:bg-[#1a2432] flex items-center justify-start gap-2"
           >
             <List className="h-4 w-4 text-teal-500" />
