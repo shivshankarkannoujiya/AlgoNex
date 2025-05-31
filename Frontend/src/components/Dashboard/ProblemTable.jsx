@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
   Bookmark,
@@ -25,6 +25,7 @@ const ProblemTable = ({ problems }) => {
     useState(false);
   const [selectedProblemId, setSelectedProblemId] = useState(null);
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
 
@@ -88,7 +89,7 @@ const ProblemTable = ({ problems }) => {
       <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
         <h2 className="text-2xl font-bold text-white">Problems</h2>
         <button
-          className="flex items-center gap-2 px-4 py-2 bg-teal-600 hover:bg-teal-700 rounded-lg text-white font-medium shadow transition"
+          className="flex items-center gap-2 px-4 py-2 bg-teal-600 hover:bg-teal-700 rounded-lg text-white font-medium shadow transition cursor-pointer"
           onClick={() => setIsCreateModelOpen(true)}
         >
           <Plus className="w-4 h-4" />
@@ -206,7 +207,12 @@ const ProblemTable = ({ problems }) => {
                                 <TrashIcon className="w-4 h-4" />
                               )}
                             </button>
-                            <button className="text-gray-300 border border-gray-500 px-2 py-1 rounded-md text-xs flex items-center">
+                            <button
+                              onClick={() =>
+                                navigate(`/admin/problems/edit/${problem.id}`)
+                              }
+                              className="text-gray-300 border border-gray-500 px-2 py-1 rounded-md text-xs flex items-center"
+                            >
                               <PencilIcon className="w-4 h-4" />
                             </button>
                           </>

@@ -98,10 +98,6 @@ const updatePlaylist = createAsyncThunk(
         name,
         description,
       });
-      toast.success("Playlist updated successfully");
-      console.log("FROM THUNK", res);
-      console.log("FROM THUNK", res.data);
-      console.log("FROM THUNK", res.data.playlist);
       return res.data.playlist;
     } catch (error) {
       const message =

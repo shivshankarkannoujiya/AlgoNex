@@ -100,17 +100,15 @@ const createProblem = asyncHandler(async (req, res) => {
 });
 
 const getAllProblems = asyncHandler(async (req, res) => {
-    const problems = await prisma.problem.findMany(
-        {
-            include: {
-                ProblemSolvedBy: {
-                    where: {
-                        userId: req.user?.id
-                    }
-                }
-            }
-        }
-    );
+    const problems = await prisma.problem.findMany({
+        include: {
+            ProblemSolvedBy: {
+                where: {
+                    userId: req.user?.id,
+                },
+            },
+        },
+    });
     if (!problems) {
         throw new ApiError(404, "No problems found !");
     }
@@ -167,11 +165,7 @@ const updateProblemById = asyncHandler(async (req, res) => {
         throw new ApiError(403, "You are not allowed to update a problem");
     }
 
-    const problem = await prisma.problem.findUnique({
-        where: {
-            id,
-        },
-    });
+    const problem = await prisma.problem.findUnique({ where: { id } });
 
     if (!problem) {
         throw new ApiError(404, `Problem not found with id ${id}`);
@@ -198,55 +192,50 @@ const updateProblemById = asyncHandler(async (req, res) => {
 
             const submissionResult = await submitBatch(submissions);
             const tokens = submissionResult.map((res) => res.token);
-
             const results = await pollBatchResults(tokens);
 
             for (let i = 0; i < results.length; i++) {
                 const result = results[i];
-                console.log("RESULT---- ", result);
-
                 console.log(
-                    `Testcase ${i + 1} and Language ${language} --- result ${JSON.stringify(result.status.description)}`,
+                    `Language: ${language}, Testcase ${i + 1} => Status: ${result.status.description}`,
                 );
 
                 if (result.status.id !== 3) {
                     throw new ApiError(
                         400,
-                        `Testcase ${i + 1} failed for language ${language}`,
+                        `Testcase ${i + 1} failed for language ${language}: ${result.stderr || result.compile_output || result.message || result.status.description}`,
                     );
                 }
             }
-
-            const updatedProblem = await prisma.problem.update({
-                where: {
-                    id: id,
-                },
-                data: {
-                    title,
-                    description,
-                    difficulty,
-                    tags,
-                    example,
-                    constraints,
-                    testcases,
-                    codeSnippets,
-                    referenceSolution,
-                    userId: req.user?.id,
-                },
-            });
-
-            return res
-                .status(201)
-                .json(
-                    new ApiResponse(
-                        201,
-                        { problem: updatedProblem },
-                        "Problem updated successfully",
-                    ),
-                );
         }
+
+        const updatedProblem = await prisma.problem.update({
+            where: { id },
+            data: {
+                title,
+                description,
+                difficulty,
+                tags,
+                example,
+                constraints,
+                testcases,
+                codeSnippets,
+                referenceSolution,
+                userId: req.user?.id,
+            },
+        });
+
+        return res
+            .status(200)
+            .json(
+                new ApiResponse(
+                    200,
+                    { problem: updatedProblem },
+                    "Problem updated successfully",
+                ),
+            );
     } catch (error) {
-        console.log("Error while updating problem: ", error);
+        console.error("Error while updating problem:", error);
         throw new ApiError(500, "Something went wrong while updating problem");
     }
 });

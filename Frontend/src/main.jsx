@@ -4,7 +4,12 @@ import App from "./App.jsx";
 import { Provider } from "react-redux";
 import store from "./Store/store.js";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { AuthLayout, Signin, PlaylistDetails } from "./components/index.js";
+import {
+  AuthLayout,
+  Signin,
+  PlaylistDetails,
+  EditProblemForm,
+} from "./components/index.js";
 
 import Home from "./pages/Home.jsx";
 import Signup from "./pages/Signup.jsx";
@@ -13,7 +18,7 @@ import Dashboard from "./pages/Dashboard.jsx";
 import Problem from "./pages/Problem.jsx";
 import Profile from "./pages/Profile.jsx";
 import Submission from "./pages/Submission.jsx";
-import AddProblem from "./pages/AddProblem.jsx"
+import AddProblem from "./pages/AddProblem.jsx";
 
 const router = createBrowserRouter([
   {
@@ -96,6 +101,15 @@ const router = createBrowserRouter([
         element: (
           <AuthLayout authentication={true}>
             <PlaylistDetails />
+          </AuthLayout>
+        ),
+      },
+
+      {
+        path: "admin/problems/edit/:id",
+        element: (
+          <AuthLayout authentication={true}>
+            <EditProblemForm />
           </AuthLayout>
         ),
       },

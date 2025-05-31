@@ -4,6 +4,7 @@ import {
   getProblemById,
   getSolvedProblemByUser,
   deleteProblem,
+  updateProblem
 } from "./problemThunks";
 
 const initialState = {
@@ -15,6 +16,7 @@ const initialState = {
   isProblemLoading: false,
   isDeletingProblem: false,
   isSolvedProblemsLoading: false,
+  isUpdatingProblem: false,
 };
 
 const problemSlice = createSlice({
@@ -29,6 +31,7 @@ const problemSlice = createSlice({
       state.isProblemLoading = false;
       state.isProblemsLoading = false;
       state.isSolvedProblemsLoading = false;
+      state.isUpdatingProblem = false;
     },
   },
   extraReducers: (builder) => {
@@ -88,6 +91,26 @@ const problemSlice = createSlice({
       .addCase(deleteProblem.rejected, (state, action) => {
         state.isDeletingProblem = false;
         state.error = action.payload;
+      })
+      .addCase(updateProblem.pending, (state) => {
+        state.error = null;
+        state.isUpdatingProblem = true;
+      })
+      .addCase(updateProblem.fulfilled, (state, action) => {
+        state.error = null;
+        state.isUpdatingProblem = false;
+        state.problem = action.payload;
+
+        const index = state.problems.findIndex(
+          (p) => p.id === action.payload.id,
+        );
+        if (index !== -1) {
+          state.problems[index] = action.payload;
+        }
+      })
+      .addCase(updateProblem.rejected, (state, action) => {
+        state.isUpdatingProblem = false;
+        state.error = action.payload || action.error.message;
       });
   },
 });

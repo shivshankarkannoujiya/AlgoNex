@@ -40,6 +40,8 @@ import ProblemHints from "./Problem/ProblemHints";
 import ProblemSubmissions from "./Problem/ProblemSubmissions";
 import CodeEditorPanel from "./Problem/CodeEditorPanel";
 import ProblemDescription from "./Problem/ProblemDescription";
+import EditProblemForm from "./Dashboard/EditProblemForm";
+
 
 export {
   Button,
@@ -71,4 +73,5 @@ export {
   ProblemSubmissions,
   CodeEditorPanel,
   ProblemDescription,
+  EditProblemForm
 };

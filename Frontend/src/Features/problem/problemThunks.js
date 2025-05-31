@@ -17,7 +17,7 @@ const getAllProblems = createAsyncThunk(
 );
 
 const getProblemById = createAsyncThunk(
-  "problme/getById",
+  "problem/getById",
   async (id, thunkAPI) => {
     try {
       const res = await apiClient.getProblemById(id);
@@ -57,9 +57,25 @@ const deleteProblem = createAsyncThunk(
   },
 );
 
+const updateProblem = createAsyncThunk(
+  "/problem/update",
+  async ({ id, problemData }, thunkAPI) => {
+    try {
+      const res = await apiClient.updateProblem(id, problemData);
+      return res.data?.problem;
+    } catch (error) {
+      return thunkAPI.rejectWithValue({
+        message: error.response?.data?.message || error.message,
+        status: error.response?.status,
+      });
+    }
+  },
+);
+
 export {
   getAllProblems,
   getProblemById,
   getSolvedProblemByUser,
   deleteProblem,
+  updateProblem,
 };
