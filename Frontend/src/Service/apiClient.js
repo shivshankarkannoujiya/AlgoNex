@@ -145,6 +145,28 @@ class ApiClient {
     });
   }
 
+  async runCode({
+    source_code,
+    language_id,
+    stdin,
+    expected_outputs,
+    problemId,
+  }) {
+    this.customFetch("/code/run", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        source_code,
+        language_id,
+        stdin,
+        expected_outputs,
+        problemId,
+      }),
+    });
+  }
+
   async getAllSubmissions() {
     return this.customFetch("/submission/getAllSubmission", {
       method: "GET",

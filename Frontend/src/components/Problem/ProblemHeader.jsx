@@ -21,7 +21,6 @@ const ProblemHeader = ({
   return (
     <nav className="w-full bg-[#000814] px-4 py-4 text-white shadow-lg">
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-        {/* Left: Breadcrumb + Title + Stats */}
         <div className="flex flex-col gap-2">
           <div className="flex items-center text-teal-500 gap-2 text-sm">
             <Link
@@ -31,7 +30,7 @@ const ProblemHeader = ({
               <Home className="w-5 h-5" />
             </Link>
             <ChevronRight className="w-4 h-4" />
-            <span className="text-white">{problem?.title || "Problem"}</span>
+            <span className="text-white font-bold">{problem?.title || "Problem"}</span>
           </div>
 
           <div className="flex flex-wrap items-center gap-3 text-sm text-gray-300 mt-1">

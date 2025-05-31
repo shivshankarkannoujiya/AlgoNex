@@ -15,11 +15,35 @@ export const executeCode = createAsyncThunk(
         expected_outputs,
         problemId,
       });
-      console.log("Thunk Res: ", res);
-      console.log("Thunk Res2: ", res.data.submission)
       return res.data.submission;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
+    }
+  },
+);
+
+export const runCode = createAsyncThunk(
+  "/code/run",
+  async (
+    { source_code, language_id, stdin, expected_outputs, problemId },
+    thunkAPI,
+  ) => {
+    try {
+      const res = await apiClient.runCode({
+        source_code,
+        language_id,
+        stdin,
+        expected_outputs,
+        problemId,
+      });
+      // console.log("RUN CODE RESULT1: ", res);
+      // console.log("RUN CODE RESULT2: ", res.data);
+      console.log("RUN CODE RESULT3: ", res.data.results);
+      return res.data.results;
+    } catch (error) {
+      thunkAPI.rejectWithValue(
+        error?.response?.data?.message || error.message || "Unknown error",
+      );
     }
   },
 );

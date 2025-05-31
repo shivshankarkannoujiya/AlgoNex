@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { getProblemById } from "../features/problem/problemThunks";
 
-import { executeCode } from "../features/execution/executionThunks";
+import { executeCode, runCode } from "../features/execution/executionThunks";
 import { getJudge0LanguageId } from "../Service/lang.js";
 import {
   getSubmissionCountForProblem,
@@ -27,7 +27,7 @@ const Problem = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { problem } = useSelector((state) => state.problems);
-  const { submission, isExecuting } = useSelector((state) => state.execution);
+  const { submission, isExecuting, results, isRunning } = useSelector((state) => state.execution);
   const {
     submissionCount,
     submission: submissionForProblem,
@@ -107,7 +107,7 @@ const Problem = () => {
     setCustomTestCases(updated);
   };
 
-  const handleRunCode = async (e) => {
+  const handleExecuteCode = async (e) => {
     e.preventDefault();
     try {
       const language_id = getJudge0LanguageId(selectedLanguage);
@@ -135,6 +135,37 @@ const Problem = () => {
     } catch (error) {
       console.error("Error Executing Code: ", error);
       toast.error("Execution Failed");
+    }
+  };
+
+  const handleRunCode = async (e) => {
+    e.preventDefault();
+    try {
+      const language_id = getJudge0LanguageId(selectedLanguage);
+      const useCustom = customTestCases.some((tc) => tc.input.trim() !== "");
+
+      const stdin = useCustom
+        ? customTestCases.map((tc) => tc.input)
+        : problem.testcases?.map((tc) => tc.input);
+
+      const expected_outputs = useCustom
+        ? customTestCases.map((tc) => tc.output)
+        : problem.testcases?.map((tc) => tc.output);
+
+      const result = await dispatch(
+        runCode({
+          source_code: code,
+          language_id,
+          stdin,
+          expected_outputs,
+          problemId: id,
+        })
+      ).unwrap()
+       console.log("RUN CODE RESULT FROM PAGE: ", result);
+      toast.success("All TestCases Passes Successfully!");
+    } catch (error) {
+      console.error("Error RUnning Code: ", error);
+      toast.error("Running Failed");
     }
   };
 
@@ -192,8 +223,10 @@ const Problem = () => {
               handleChangeCustomTestCase={handleChangeCustomTestCase}
             />
             <RunControls
+              handleExecuteCode={handleExecuteCode}
               handleRunCode={handleRunCode}
               isExecuting={isExecuting}
+              isRunning = {isRunning}
             />
           </div>
         </div>
