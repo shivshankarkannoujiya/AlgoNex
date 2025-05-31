@@ -9,8 +9,8 @@ import { Logo } from "../index.js";
 const navLinks = [
   { path: "/", name: "Home" },
   { path: "/dashboard", name: "Problems" },
-  { path: "/contests", name: "Contests" },
-  { path: "/contests", name: "Playlist" },
+  { path: "/", name: "Contests" },
+  { path: "/", name: "Playlist" },
 ];
 
 const Header = () => {
