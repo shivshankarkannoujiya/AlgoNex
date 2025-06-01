@@ -11,8 +11,8 @@ import {
 const router = Router();
 
 router.route("/create").post(isLoggedIn, createPost);
-router.route("/getpost-byproblem").get(isLoggedIn, getPostsByProblem);
-router.route("/getpost-byId").get(isLoggedIn, getPostById);
-router.route("/delete").delete(isLoggedIn, deletePost);
+router.route("/:problemId/posts").get(isLoggedIn, getPostsByProblem);
+router.route("/:postId").get(isLoggedIn, getPostById);
+router.route("/:postId/delete").delete(isLoggedIn, deletePost);
 
 export default router;
