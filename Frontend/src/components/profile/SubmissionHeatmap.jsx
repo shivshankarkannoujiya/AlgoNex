@@ -60,7 +60,7 @@ const SubmissionHeatmap = ({ userId }) => {
   }, [userId]);
 
   return (
-    <div className="bg-[#000814] home-gradient p-6 rounded-xl shadow-lg w-full max-w-7xl mx-auto">
+    <div className="bg-[#000814] border border-gray-700 home-gradient p-6 rounded-xl shadow-lg w-full max-w-7xl mx-auto">
       <h2 className="text-white text-xl font-bold mb-4 text-center">Submission Activity</h2>
 
       <div className="overflow-x-auto">
