@@ -25,26 +25,29 @@ enum Status {
 }
 
 model User {
-  id                      String       @id @default(uuid())
-  avatarUrl               String?      @default("https://placehold.co/500x400")
-  avatarLocalPath         String?      @default("")
-  username                String       @unique
-  email                   String       @unique
-  role                    UserRole     @default(USER)
+  id                      String          @id @default(uuid())
+  avatarUrl               String?         @default("https://placehold.co/500x400")
+  avatarLocalPath         String?         @default("")
+  username                String          @unique
+  email                   String          @unique
+  role                    UserRole        @default(USER)
   password                String
-  isEmailVerified         Boolean      @default(false)
+  isEmailVerified         Boolean         @default(false)
   forgotPasswordToken     String?
   forgotPasswordExpiry    DateTime?
   refreshToken            String?
   emailVerificationToken  String?
   emailVerificationExpiry DateTime?
-  createdAt               DateTime     @default(now())
-  updatedAt               DateTime     @updatedAt
+  createdAt               DateTime        @default(now())
+  updatedAt               DateTime        @updatedAt
   Problem                 Problem[]
   submission              Submission[]
-
-  ProblemSolved ProblemSolved[]
-  Playlist      Playlist[]
+  ProblemSolved           ProblemSolved[]
+  Playlist                Playlist[]
+  CommentUpvote           CommentUpvote[]
+  PostUpvote              PostUpvote[]
+  Comment                 Comment[]
+  Post                    Post[]
 }
 
 model Problem {
@@ -67,6 +70,8 @@ model Problem {
   submission         Submission[]
   ProblemSolvedBy    ProblemSolved[]
   ProblemsInPlaylist ProblemInPlaylist[]
+
+  Post Post[]
 }
 
 model Submission {
@@ -145,4 +150,53 @@ model ProblemInPlaylist {
   problem    Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
 
   @@unique([playlistId, problemId])
+}
+
+model Post {
+  id        String   @id @default(uuid())
+  problemId String
+  authorId  String
+  title     String
+  content   String
+  tags      String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  author   User         @relation(fields: [authorId], references: [id])
+  problem  Problem      @relation(fields: [problemId], references: [id])
+  comments Comment[]
+  upvotes  PostUpvote[]
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  postId    String
+  authorId  String
+  content   String
+  createdAt DateTime @default(now())
+
+  post    Post            @relation(fields: [postId], references: [id])
+  author  User            @relation(fields: [authorId], references: [id])
+  upvotes CommentUpvote[]
+}
+
+model PostUpvote {
+  id     String @id @default(uuid())
+  userId String
+  postId String
+
+  user User @relation(fields: [userId], references: [id])
+  post Post @relation(fields: [postId], references: [id])
+
+  @@unique([userId, postId])
+}
+
+model CommentUpvote {
+  id        String  @id @default(uuid())
+  userId    String
+  commentId String
+  user      User    @relation(fields: [userId], references: [id])
+  comment   Comment @relation(fields: [commentId], references: [id])
+
+  @@unique([userId, commentId])
 }
