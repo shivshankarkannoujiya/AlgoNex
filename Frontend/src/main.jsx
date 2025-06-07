@@ -13,7 +13,6 @@ import {
 
 import Home from "./pages/Home.jsx";
 import Signup from "./pages/Signup.jsx";
-import VerifyEmail from "./pages/VerifyEmail.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import Problem from "./pages/Problem.jsx";
 import Profile from "./pages/Profile.jsx";
@@ -50,10 +49,6 @@ const router = createBrowserRouter([
         ),
       },
 
-      {
-        path: "verify/:token",
-        element: <VerifyEmail />,
-      },
 
       {
         path: "dashboard",
