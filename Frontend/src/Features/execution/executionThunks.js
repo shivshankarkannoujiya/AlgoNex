@@ -36,9 +36,6 @@ export const runCode = createAsyncThunk(
         expected_outputs,
         problemId,
       });
-      // console.log("RUN CODE RESULT1: ", res);
-      // console.log("RUN CODE RESULT2: ", res.data);
-      console.log("RUN CODE RESULT3: ", res.data.results);
       return res.data.results;
     } catch (error) {
       thunkAPI.rejectWithValue(

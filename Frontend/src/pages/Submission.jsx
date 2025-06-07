@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllSubmissions } from "../features/submission/submissionThunks";
 import { Link } from "react-router-dom";
+import { Loader } from "lucide-react";
+
 
 const statusColor = {
   ACCEPTED: "text-green-600 font-semibold",
@@ -38,14 +40,14 @@ const Submission = () => {
 
   if (isLoading)
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <h1 className="text-2xl text-black">Loading...</h1>
+      <div className="flex items-center justify-center h-screen bg-[#000814] text-white">
+        <Loader className="size-10 animate-spin" />
       </div>
     );
 
 
   return (
-    <div className="bg-[#000814] text-gray-100">
+    <div className="bg-[#000814] home-gradient text-gray-100 min-h-screen">
       <div className="p-6  overflow-x-auto  home-gradient max-w-7xl mx-auto">
         <h2 className="text-2xl font-bold mb-4 text-teal-600 ">All My Submissions</h2>
         <table className="min-w-full text-sm text-left border border-gray-200">

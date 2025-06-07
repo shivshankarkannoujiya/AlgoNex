@@ -85,7 +85,7 @@ const TabsSection = () => {
             >
               <span>{playlist.name}</span>
               <span className="text-gray-400 text-sm">
-                {playlist.problems.length} problems
+                {playlist.problems?.length} problems
               </span>
             </div>
           ))}

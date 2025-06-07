@@ -126,7 +126,7 @@ const PlaylistDetails = () => {
 
   if (isLoading || !currentPlaylist) {
     return (
-      <div className="text-white flex items-center justify-center h-screen">
+      <div className="text-white flex items-center justify-center h-screen bg-[#000814] home-gradient">
         <div className="animate-spin h-10 w-10 border-4 border-teal-500 border-t-transparent rounded-full"></div>
       </div>
     );

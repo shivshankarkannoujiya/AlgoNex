@@ -159,8 +159,9 @@ const Problem = () => {
           problemId: id,
         }),
       ).unwrap();
+      toast.success("Passes all Testcases!");
     } catch (error) {
-      console.error("Error RUnning Code: ", error);
+      console.error("Error Running Code: ", error);
       toast.error("Running Failed");
     }
   };
