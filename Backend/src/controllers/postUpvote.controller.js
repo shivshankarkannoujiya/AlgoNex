@@ -9,6 +9,7 @@ const togglePostUpvote = asyncHandler(async (req, res) => {
     const post = await prisma.post.findUnique({
         where: { id: postId },
     });
+
     if (!post) {
         return res.status(404).json({ error: "Post not found" });
     }
@@ -22,6 +23,8 @@ const togglePostUpvote = asyncHandler(async (req, res) => {
         },
     });
 
+    let message;
+
     if (existingUpvote) {
         await prisma.postUpvote.delete({
             where: {
@@ -31,7 +34,7 @@ const togglePostUpvote = asyncHandler(async (req, res) => {
                 },
             },
         });
-        return res.status(200).json(new ApiResponse(201, "Upvote removed"));
+        message = "Upvote removed";
     } else {
         await prisma.postUpvote.create({
             data: {
@@ -39,11 +42,16 @@ const togglePostUpvote = asyncHandler(async (req, res) => {
                 userId,
             },
         });
-        return res
-            .status(200)
-            .json(new ApiResponse(201, "Upvote Successfully"));
+        message = "Upvote successfully";
     }
-    // TODO:  return total upvotes count after toggling
+
+    const upvotes = await prisma.postUpvote.count({
+        where: { postId },
+    });
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, message, { upvotes: upvotes }));
 });
 
 export { togglePostUpvote };

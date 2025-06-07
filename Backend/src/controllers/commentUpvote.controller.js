@@ -57,4 +57,3 @@ const toggleCommentUpvote = asyncHandler(async (req, res) => {
 });
 
 export { toggleCommentUpvote };
-

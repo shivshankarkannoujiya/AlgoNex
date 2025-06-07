@@ -66,14 +66,14 @@ const registerUser = asyncHandler(async (req, res) => {
         },
     });
 
-    sendEmail({
-        email: user?.email,
-        subject: "Please verify your email",
-        mailGenContent: emailVerificationMailGenContent(
-            user.username,
-            `${req.protocol}://${req.get("host")}/api/v1/users/verify/${unHashedToken}`,
-        ),
-    });
+    // sendEmail({
+    //     email: user?.email,
+    //     subject: "Please verify your email",
+    //     mailGenContent: emailVerificationMailGenContent(
+    //         user.username,
+    //         `${req.protocol}://${req.get("host")}/api/v1/users/verify/${unHashedToken}`,
+    //     ),
+    // });
 
     return res
         .status(201)
@@ -146,9 +146,9 @@ const loginUser = asyncHandler(async (req, res) => {
         throw new ApiError(401, "Invalid user credentials");
     }
 
-    if (!user.isEmailVerified) {
-        throw new ApiError(401, "Please verify your email before logging in");
-    }
+    // if (!user.isEmailVerified) {
+    //     throw new ApiError(401, "Please verify your email before logging in");
+    // }
 
     const { accessToken, refreshToken } = await generateAccessAndRefreshToken(
         user.id,
@@ -552,5 +552,5 @@ export {
     resetForgottenPassword,
     changeCurrentPassword,
     updateAccountDetails,
-    getUserDashboardSummary
+    getUserDashboardSummary,
 };

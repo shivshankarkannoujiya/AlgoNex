@@ -98,6 +98,43 @@ const getPostsByProblem = asyncHandler(async (req, res) => {
         );
 });
 
+const getAllPosts = asyncHandler(async (req, res) => {
+    const sort = req.query.sort || "newest"; // can be 'newest' or 'popular'
+
+    const posts = await prisma.post.findMany({
+        orderBy:
+            sort === "popular"
+                ? { upvotes: { _count: "desc" } }
+                : { createdAt: "desc" },
+
+        include: {
+            author: {
+                select: {
+                    id: true,
+                    username: true,
+                    avatarUrl: true,
+                },
+            },
+            _count: {
+                select: {
+                    comments: true,
+                    upvotes: true,
+                },
+            },
+        },
+    });
+
+    return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                { posts: posts },
+                "All Post Fetched Successfully",
+            ),
+        );
+});
+
 const getPostById = asyncHandler(async (req, res) => {
     const { postId } = req.params;
 
@@ -152,4 +189,4 @@ const deletePost = asyncHandler(async (req, res) => {
     return res.status(204).json(204, "Post Deleted Successfully");
 });
 
-export { createPost, getPostsByProblem, getPostById, deletePost };
+export { createPost, getPostsByProblem, getPostById, deletePost, getAllPosts };
