@@ -4,7 +4,6 @@ import {
     loginUser,
     signupUser,
     logoutUser,
-    verifyEmail,
 } from "./authThunks";
 
 const initialState = {
@@ -12,7 +11,6 @@ const initialState = {
     isAuthenticated: false,
     loading: false,
     error: null,
-    emailVerified: false
 };
 
 const authSlice = createSlice({
@@ -24,7 +22,6 @@ const authSlice = createSlice({
             state.isAuthenticated = false;
             state.loading = false;
             state.error = null;
-            emailVerified: false
             localStorage.removeItem("isLoggedIn");
         },
     },
@@ -78,14 +75,6 @@ const authSlice = createSlice({
                 state.isAuthenticated = false;
             })
             .addCase(logoutUser.rejected, handleRejected)
-
-            .addCase(verifyEmail.pending, handlePending)
-            .addCase(verifyEmail.fulfilled, (state) => {
-                state.error = null;
-                state.loading = false;
-                state.emailVerified = true
-            })
-            .addCase(verifyEmail.rejected, handleRejected);
     },
 });
 
