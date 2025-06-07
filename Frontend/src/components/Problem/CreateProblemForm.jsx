@@ -65,7 +65,6 @@ const CreateProblemForm = () => {
         try {
             setIsLoading(true);
             const res = await apiClient.createProblem(value);
-            console.log(res.data);
             toast.success(
                 res.data.message || "Problem Created successfully ⚡",
             );

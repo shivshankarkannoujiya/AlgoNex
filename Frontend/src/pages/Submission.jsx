@@ -21,7 +21,7 @@ const Submission = () => {
       }
       return data;
     } catch (error) {
-      console.log("Error while parsing data:", error);
+      console.error("Error while parsing data:", error);
       return [];
     }
   };
@@ -43,7 +43,6 @@ const Submission = () => {
       </div>
     );
 
-  console.log("ALL SUBMISSION: ", submissions);
 
   return (
     <div className="bg-[#000814] text-gray-100">

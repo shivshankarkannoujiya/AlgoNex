@@ -15,7 +15,7 @@ const SubmissionList = ({ submissionForProblem, isSubmissionLoading }) => {
     try {
       return JSON.parse(data);
     } catch (error) {
-      console.log("Error while parsing data:", error);
+      console.error("Error while parsing data:", error);
       return [];
     }
   };

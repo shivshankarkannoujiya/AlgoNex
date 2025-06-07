@@ -10,7 +10,6 @@ const CreatePlaylistModel = ({ isOpen, onClose, onSubmit }) => {
   } = useForm();
 
   const handleFormSubmit = async (data) => {
-    console.log("Form submitted:", data);
     await onSubmit(data);
     reset();
     onClose();

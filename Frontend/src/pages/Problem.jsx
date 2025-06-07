@@ -27,7 +27,9 @@ const Problem = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { problem } = useSelector((state) => state.problems);
-  const { submission, isExecuting, results, isRunning } = useSelector((state) => state.execution);
+  const { submission, isExecuting, results, isRunning } = useSelector(
+    (state) => state.execution,
+  );
   const {
     submissionCount,
     submission: submissionForProblem,
@@ -66,9 +68,6 @@ const Problem = () => {
     }
   }, [dispatch]);
 
-  console.log("Submission: ", submissionForProblem);
-  console.log(problem);
-  console.log("submissionForProblem: ", submissionForProblem);
 
   useEffect(() => {
     if (problem) {
@@ -81,7 +80,6 @@ const Problem = () => {
       );
     }
   }, [problem, selectedLanguage]);
-  console.log("TESTCASES: ", testcases);
 
   const handleLanguageChange = (e) => {
     const language = e.target.value;
@@ -152,17 +150,15 @@ const Problem = () => {
         ? customTestCases.map((tc) => tc.output)
         : problem.testcases?.map((tc) => tc.output);
 
-      const result = await dispatch(
+      await dispatch(
         runCode({
           source_code: code,
           language_id,
           stdin,
           expected_outputs,
           problemId: id,
-        })
-      ).unwrap()
-       console.log("RUN CODE RESULT FROM PAGE: ", result);
-      toast.success("All TestCases Passes Successfully!");
+        }),
+      ).unwrap();
     } catch (error) {
       console.error("Error RUnning Code: ", error);
       toast.error("Running Failed");
@@ -181,7 +177,7 @@ const Problem = () => {
           />
         );
       case "discussion":
-        return <ProblemDiscussion />;
+        return <ProblemDiscussion problemId={problem.id} />;
       case "hints":
         return <ProblemHints hints={problem?.hints} />;
       default:
@@ -226,7 +222,7 @@ const Problem = () => {
               handleExecuteCode={handleExecuteCode}
               handleRunCode={handleRunCode}
               isExecuting={isExecuting}
-              isRunning = {isRunning}
+              isRunning={isRunning}
             />
           </div>
         </div>

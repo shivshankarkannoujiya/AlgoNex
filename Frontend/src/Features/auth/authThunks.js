@@ -31,8 +31,6 @@ const getCurrentUser = createAsyncThunk("auth/getMe", async (_, thunkAPI) => {
         const res = await apiClient.getMe();
 
         if (res.data) {
-            console.log("getMe response:", res);
-            console.log("FROM getCurrentUser: ", res.data);
             return res.data;
         } else {
             throw new Error("User not found");

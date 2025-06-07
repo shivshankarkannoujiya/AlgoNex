@@ -242,6 +242,53 @@ class ApiClient {
       body: JSON.stringify({ name, description }),
     });
   }
+
+  async createPost(postData) {
+    return this.customFetch("/post/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(postData),
+    });
+  }
+
+  async fetchPosts() {
+    return this.customFetch("/post/posts", {
+      method: "GET",
+    });
+  }
+
+  async fetchPostById(postId) {
+    return this.customFetch(`/post/${postId}`, {
+      method: "GET",
+    });
+  }
+
+  async addComment(postId, content) {
+    return this.customFetch(`/comment/${postId}/comments`, {
+      method: "POST",
+      body: JSON.stringify(content),
+    });
+  }
+
+  async deleteComment(commentId) {
+    return this.customFetch(`/comment/${commentId}`, {
+      method: "DELETE",
+    });
+  }
+
+  async togglePostUpvote(postId) {
+    return this.customFetch(`/post/${postId}/upvote`, {
+      method: "PUT",
+    });
+  }
+
+  async toggleCommentUpvote(commentId) {
+    return this.customFetch(`/comments/${commentId}/upvote`, {
+      method: "PUT",
+    });
+  }
 }
 
 const apiClient = new ApiClient();

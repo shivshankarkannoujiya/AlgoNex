@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import  { useEffect } from "react";
 import { getAllProblems } from "../features/problem/problemThunks";
 import { useDispatch, useSelector } from "react-redux";
 import { Loader } from "lucide-react";
@@ -12,10 +12,8 @@ const Dashboard = () => {
 
   useEffect(() => {
     dispatch(getAllProblems());
-    
   }, [dispatch]);
 
-  console.log("problems: ", problems);
   if (isProblemsLoading) {
     return (
       <div className="flex items-center justify-center h-screen bg-[#000814] text-white">
@@ -44,7 +42,9 @@ const Dashboard = () => {
           <ProblemTable problems={problems} />
         </div>
       ) : (
-        <h1 className="text-4xl text-white">No Problem Found</h1>
+        <div className="flex items-center justify-center h-screen bg-[#000814] text-white">
+          <h1 className="text-4xl text-white ">No Problem Found</h1>
+        </div>
       )}
     </div>
   );

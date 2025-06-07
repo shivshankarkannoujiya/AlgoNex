@@ -30,7 +30,9 @@ const ProblemHeader = ({
               <Home className="w-5 h-5" />
             </Link>
             <ChevronRight className="w-4 h-4" />
-            <span className="text-white font-bold">{problem?.title || "Problem"}</span>
+            <span className="text-white font-bold">
+              {problem?.title || "Problem"}
+            </span>
           </div>
 
           <div className="flex flex-wrap items-center gap-3 text-sm text-gray-300 mt-1">

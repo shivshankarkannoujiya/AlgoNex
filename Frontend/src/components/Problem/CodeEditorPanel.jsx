@@ -16,13 +16,11 @@ const CodeEditorPanel = ({
 
   return (
     <div className="bg-gray-950 rounded-xl shadow-xl overflow-hidden">
-      {/* Header */}
       <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-800 text-sm font-medium text-gray-300 bg-gray-950">
         <Terminal className="w-4 h-4 text-teal-400" />
         Code Editor
       </div>
 
-      {/* Monaco Editor */}
       <div className="h-[600px] w-full">
         <Editor
           height="100%"
@@ -53,7 +51,6 @@ const CodeEditorPanel = ({
         />
       </div>
 
-      {/* Custom Test Cases */}
       <div className="p-4 border-t border-gray-800">
         <div className="flex flex-wrap items-center gap-2 mb-4">
           {customTestCases.map((_, index) => (

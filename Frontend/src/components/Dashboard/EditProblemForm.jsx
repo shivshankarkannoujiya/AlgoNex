@@ -60,8 +60,6 @@ const EditProblemForm = () => {
     replace: replaceTags,
   } = useFieldArray({ control, name: "tags" });
 
-  console.log("🔍 useParams ID:", id);
-  console.log("🧠 Redux problem:", problem);
 
   useEffect(() => {
     dispatch(getProblemById(id));
@@ -69,7 +67,6 @@ const EditProblemForm = () => {
 
   useEffect(() => {
     if (problem && problem.id === id) {
-      console.log("🎯 Running reset with problem:", problem);
       reset({
         ...problem,
         examples: problem.examples || {
