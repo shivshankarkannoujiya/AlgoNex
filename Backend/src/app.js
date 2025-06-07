@@ -10,7 +10,7 @@ app.use(express.static("public"));
 app.use(cookieParser());
 app.use(
     cors({
-        origin: "https://www.algonex.in",
+        origin: ["https://www.algonex.in", "http://localhost:5173"],
         credentials: true,
     }),
 );
