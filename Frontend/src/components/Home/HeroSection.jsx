@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Button from "../Common/Button";
 import { useSelector } from "react-redux";
 
@@ -28,17 +28,19 @@ const HeroSection = () => {
       </h1>
 
       <p className="tagline text-lg font-light md:text-xl max-w-2xl mb-10 ">
-        Your AI-powered partner for mastering competitive programming,
-        intelligent debugging, and acing every technical interview.
+        Your ultimate platform for mastering competitive programming and
+        cracking technical interviews
       </p>
 
-      <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-        <Button
-          onClick={handleClick}
-          className="px-12 py-4 w-full bg-teal-600 text-xl font-semibold hover:bg-teal-800 transition-color duration-300 hover:scale-105 transition-transform"
-        >
-          Start Practicing
-        </Button>
+      <div className="flex justify-center w-full">
+        <div className="flex flex-col sm:flex-row gap-4 w-full max-w-md">
+          <Button
+            onClick={handleClick}
+            className="w-full px-6 py-4 bg-teal-600 text-lg sm:text-xl font-semibold hover:bg-teal-800 transition-all duration-300 hover:scale-105"
+          >
+            Start Practicing
+          </Button>
+        </div>
       </div>
     </section>
   );

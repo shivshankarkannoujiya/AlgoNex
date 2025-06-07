@@ -1,4 +1,4 @@
-import  { useEffect } from "react";
+import { useEffect } from "react";
 import { getAllProblems } from "../features/problem/problemThunks";
 import { useDispatch, useSelector } from "react-redux";
 import { Loader } from "lucide-react";
@@ -33,8 +33,8 @@ const Dashboard = () => {
         Welcome to <span className="text-teal-500">AlgoNex</span>
       </h1>
       <p className="text-center text-gray-400 mb-10">
-        A Platform Inspired by Leetcode to help you prepare for coding
-        interviews.
+        Practice problems by topic, difficulty, and patterns to master DSA like
+        a pro.
       </p>
 
       {problems.length > 0 ? (

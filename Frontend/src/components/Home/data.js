@@ -1,26 +1,32 @@
 export const features = [
   {
-    title: 'Real-time Collaboration',
-    description: 'Code with friends or peers in real-time. See their cursor and edits live.',
+    title: "Practice-First Learning",
+    description:
+      "Jump straight into solving beginner-friendly problems with instant feedback and hints.",
   },
   {
-    title: 'AI Debugging Assistant',
-    description: 'Instant feedback on errors and suggestions to improve your logic.',
+    title: "Discussion-Driven Growth",
+    description:
+      "Explore community discussions, ask questions, and learn from shared explanations.",
   },
   {
-    title: 'Personalized Problem Sets',
-    description: 'Get challenges that match your skill level and learning goals.',
+    title: "Curated Problem Playlists",
+    description:
+      "Solve structured playlists designed for mastering key concepts step-by-step.",
   },
   {
-    title: 'Contest Mode',
-    description: 'Compete in time-bound contests to test your skills under pressure.',
+    title: "Gamified Progress",
+    description:
+      "Earn badges, level up, and stay motivated as you complete more challenges.",
   },
   {
-    title: 'Performance Analytics',
-    description: 'Track your progress, accuracy, and speed with detailed insights.',
+    title: "Lightweight Contest Mode",
+    description:
+      "Join casual contests built for learning, not just competition.",
   },
   {
-    title: 'Mock Interviews',
-    description: 'Simulate real interview environments with timed and voice-enabled sessions.',
+    title: "Beginner-Friendly Interface",
+    description:
+      "Clean, distraction-free design built to help you focus on learning and improving.",
   },
 ];

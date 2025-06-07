@@ -19,6 +19,8 @@ import Problem from "./pages/Problem.jsx";
 import Profile from "./pages/Profile.jsx";
 import Submission from "./pages/Submission.jsx";
 import AddProblem from "./pages/AddProblem.jsx";
+import Contest from "./pages/Contest.jsx";
+
 
 const router = createBrowserRouter([
   {
@@ -113,6 +115,15 @@ const router = createBrowserRouter([
           </AuthLayout>
         ),
       },
+
+      {
+        path: "/contests",
+        element: (
+          <AuthLayout>
+            <Contest/>
+          </AuthLayout>
+        )
+      }
     ],
   },
 ]);

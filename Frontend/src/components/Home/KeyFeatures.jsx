@@ -4,7 +4,7 @@ import { features } from "./data";
 
 const KeyFeatures = () => {
     return (
-        <section className="bg-[#000814] text-white py-15 px-4 mt-10 sm:px-10 lg:px-32">
+        <section className="bg-[#000814] home-gradient text-white py-15 px-4 mt-10 sm:px-10 lg:px-32">
             <div className="text-center mb-12">
                 <h2 className="text-3xl sm:text-4xl font-bold mb-4">
                     Why Choose <span className="text-teal-400">AlgoNex?</span>
